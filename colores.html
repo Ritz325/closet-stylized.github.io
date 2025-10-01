@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closet Stylized - Colores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0014 0%, #1a0033 50%, #2d1b4e 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(10, 0, 20, 0.95);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #9333ea;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #a855f7, #d946ef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #a855f7;
+        }
+
+        .cart {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #9333ea;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .container {
+            display: flex;
+            height: calc(100vh - 70px);
+        }
+
+        .sidebar {
+            width: 200px;
+            background: rgba(20, 0, 40, 0.6);
+            padding: 20px;
+            border-right: 1px solid rgba(147, 51, 234, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .sidebar h3 {
+            color: #a855f7;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .sidebar-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            width: 100%;
+            text-align: left;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .sidebar-item.active {
+            background: rgba(147, 51, 234, 0.5);
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header-section h1 {
+            font-size: 32px;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 15px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(20, 0, 40, 0.5);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
+
+        .tab:hover {
+            background: rgba(147, 51, 234, 0.3);
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+        }
+
+        .tab.active {
+            background: #9333ea;
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
+        }
+
+        .colors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .color-card {
+            background: rgba(20, 0, 40, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(147, 51, 234, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .color-card:hover {
+            transform: translateY(-5px);
+            border-color: #9333ea;
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.5);
+        }
+
+        .color-preview {
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .color-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .color-info {
+            padding: 20px;
+        }
+
+        .color-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .color-type {
+            font-size: 12px;
+            color: #a0a0c0;
+            margin-bottom: 15px;
+        }
+
+        .info-tag {
+            display: inline-block;
+            padding: 5px 10px;
+            background: rgba(147, 51, 234, 0.3);
+            border-radius: 15px;
+            font-size: 11px;
+            margin: 3px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .new-color-card {
+            border: 2px dashed rgba(147, 51, 234, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            cursor: pointer;
+            background: rgba(20, 0, 40, 0.3);
+        }
+
+        .new-color-card:hover {
+            border-color: #a855f7;
+            background: rgba(147, 51, 234, 0.2);
+            box-shadow: 0 0 30px rgba(147, 51, 234, 0.4);
+        }
+
+        .plus-icon {
+            font-size: 48px;
+            color: #a855f7;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 2px solid #9333ea;
+            box-shadow: 0 0 50px rgba(147, 51, 234, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #a855f7;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
+        }
+
+        .detail-color-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 20px;
+            margin: 20px auto;
+            box-shadow: 0 10px 40px rgba(147, 51, 234, 0.6);
+        }
+
+        .detail-section {
+            margin: 20px 0;
+        }
+
+        .detail-section h3 {
+            color: #a855f7;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+        }
+
+        .combinations {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .combo-color {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3);
+        }
+
+        .combo-color:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(147, 51, 234, 0.6);
+        }
+
+        .clothing-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .clothing-list li {
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(147, 51, 234, 0.15);
+            border-radius: 8px;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
+
+        .clothing-list li:before {
+            content: "✓ ";
+            color: #a855f7;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h3>Herramientas</h3>
+            <a href="moodboard.html" class="sidebar-item">
+                🔙​ Volver
+            </a>
+            <a href="colores.html" class="sidebar-item active">
+                🎨 Colores
+            </a>
+            <a href="texturas.html" class="sidebar-item">
+                🖼️ Texturas
+            </a>
+
+            <h3 style="margin-top: 30px;">Colecciones</h3>
+            <a href="colores.html" class="sidebar-item">
+                📁 Todos
+            </a>
+            <a href="mis-colores.html" class="sidebar-item">
+                🎨 Mis Colores
+            </a>
+            <a href="compartidos.html" class="sidebar-item">
+                👥 Compartidos
+            </a>
+            <a href="moodboard.html" class="sidebar-item">
+                ➕ Nueva Colección
+            </a>
+        </aside>
+
+        <main class="main-content">
+            <div class="header-section">
+                <h1>Paleta de Colores</h1>
+            </div>
+
+            <div class="colors-grid" id="colorsGrid">
+            </div>
+        </main>
+    </div>
+
+    <div class="modal" id="colorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalColorName"></h2>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            <div class="detail-color-preview" id="modalColorPreview"></div>
+            
+            <div class="detail-section">
+                <h3>Temperatura</h3>
+                <p id="modalTemperature"></p>
+            </div>
+
+            <div class="detail-section">
+                <h3>Ideal para estas prendas</h3>
+                <ul class="clothing-list" id="modalClothing"></ul>
+            </div>
+
+            <div class="detail-section">
+                <h3>Combina bien con</h3>
+                <div class="combinations" id="modalCombinations"></div>
+            </div>
+
+            <div class="detail-section">
+                <h3>Ocasiones</h3>
+                <div id="modalOccasions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const colors = [
+            {
+                name: "Rojo Pasión",
+                hex: "#E63946",
+                type: "Cálido",
+                temperature: "Color cálido y energético que transmite confianza y poder",
+                clothing: ["Vestidos de noche", "Blusas elegantes", "Abrigos de invierno", "Accesorios statement"],
+                combinations: ["#1D3557", "#F1FAEE", "#000000", "#A8DADC"],
+                occasions: ["Formal", "Romántico", "Llamativo"]
+            },
+            {
+                name: "Azul Marino",
+                hex: "#1D3557",
+                type: "Frío",
+                temperature: "Color frío, profesional y versátil que transmite confianza",
+                clothing: ["Trajes formales", "Jeans", "Camisas de trabajo", "Blazers"],
+                combinations: ["#FFFFFF", "#F1FAEE", "#E63946", "#FFB703"],
+                occasions: ["Profesional", "Casual", "Formal"]
+            },
+            {
+                name: "Verde Menta",
+                hex: "#A8DADC",
+                type: "Frío",
+                temperature: "Color frío y refrescante que transmite calma y sofisticación",
+                clothing: ["Blusas de verano", "Vestidos casuales", "Camisetas", "Accesorios"],
+                combinations: ["#457B9D", "#F1FAEE", "#E63946", "#1D3557"],
+                occasions: ["Casual", "Verano", "Fresco"]
+            },
+            {
+                name: "Amarillo Mostaza",
+                hex: "#FFB703",
+                type: "Cálido",
+                temperature: "Color cálido y vibrante que aporta energía y optimismo",
+                clothing: ["Suéteres", "Faldas", "Chaquetas", "Bufandas"],
+                combinations: ["#1D3557", "#023047", "#FFFFFF", "#8B4513"],
+                occasions: ["Casual", "Otoño", "Alegre"]
+            },
+            {
+                name: "Rosa Empolvado",
+                hex: "#F4ACB7",
+                type: "Cálido",
+                temperature: "Color cálido suave que transmite dulzura y elegancia",
+                clothing: ["Vestidos", "Blusas románticas", "Abrigos ligeros", "Lencería"],
+                combinations: ["#9D8189", "#FFFFFF", "#FFE5D9", "#D8E2DC"],
+                occasions: ["Romántico", "Delicado", "Femenino"]
+            },
+            {
+                name: "Negro Clásico",
+                hex: "#000000",
+                type: "Neutro",
+                temperature: "Color neutro versátil que transmite elegancia y sofisticación",
+                clothing: ["Todo tipo de prendas", "Vestidos de noche", "Trajes", "Accesorios"],
+                combinations: ["#FFFFFF", "#E63946", "#FFB703", "#A8DADC"],
+                occasions: ["Formal", "Elegante", "Universal"]
+            },
+            {
+                name: "Blanco Puro",
+                hex: "#F1FAEE",
+                type: "Neutro",
+                temperature: "Color neutro que transmite pureza, frescura y limpieza",
+                clothing: ["Camisas", "Vestidos de verano", "Pantalones", "Ropa interior"],
+                combinations: ["#1D3557", "#E63946", "#457B9D", "#000000"],
+                occasions: ["Verano", "Formal", "Limpio"]
+            },
+            {
+                name: "Morado Real",
+                hex: "#6A4C93",
+                type: "Frío",
+                temperature: "Color frío que transmite lujo, creatividad y misterio",
+                clothing: ["Vestidos de noche", "Blusas elegantes", "Accesorios", "Chaquetas"],
+                combinations: ["#FFE5D9", "#FFFFFF", "#C9ADA7", "#F2E9E4"],
+                occasions: ["Elegante", "Creativo", "Nocturno"]
+            },
+            {
+                name: "Verde Oliva",
+                hex: "#606C38",
+                type: "Cálido",
+                temperature: "Color cálido terroso que transmite naturalidad y estabilidad",
+                clothing: ["Chaquetas outdoor", "Pantalones cargo", "Camisetas", "Prendas casual"],
+                combinations: ["#FEFAE0", "#DDA15E", "#BC6C25", "#283618"],
+                occasions: ["Casual", "Natural", "Aventura"]
+            },
+            {
+                name: "Coral Vibrante",
+                hex: "#FF6B6B",
+                type: "Cálido",
+                temperature: "Color cálido alegre que transmite vitalidad y frescura",
+                clothing: ["Vestidos de verano", "Tops", "Bikinis", "Accesorios"],
+                combinations: ["#4ECDC4", "#F7FFF7", "#FFE66D", "#1A535C"],
+                occasions: ["Verano", "Playa", "Festivo"]
+            },
+            {
+                name: "Gris Perla",
+                hex: "#9D8189",
+                type: "Neutro",
+                temperature: "Color neutro sofisticado que transmite elegancia moderna",
+                clothing: ["Trajes", "Abrigos", "Vestidos minimalistas", "Suéteres"],
+                combinations: ["#F4ACB7", "#FFFFFF", "#000000", "#D8E2DC"],
+                occasions: ["Profesional", "Moderno", "Minimalista"]
+            },
+            {
+                name: "Turquesa",
+                hex: "#4ECDC4",
+                type: "Frío",
+                temperature: "Color frío tropical que transmite frescura y energía",
+                clothing: ["Ropa de playa", "Vestidos de verano", "Accesorios", "Activewear"],
+                combinations: ["#FF6B6B", "#F7FFF7", "#FFE66D", "#1A535C"],
+                occasions: ["Tropical", "Verano", "Relajado"]
+            }
+        ];
+
+        function renderColors() {
+            const grid = document.getElementById('colorsGrid');
+            
+            colors.forEach(color => {
+                const card = document.createElement('div');
+                card.className = 'color-card';
+                card.onclick = () => showColorDetail(color);
+                
+                card.innerHTML = `
+                    <div class="color-preview" style="background: linear-gradient(135deg, ${color.hex}, ${adjustBrightness(color.hex, -20)})">
+                        <div class="color-circle" style="background: ${color.hex}"></div>
+                    </div>
+                    <div class="color-info">
+                        <div class="color-name">${color.name}</div>
+                        <div class="color-type">${color.type} · ${color.hex}</div>
+                        <div>
+                            ${color.occasions.slice(0, 2).map(occ => `<span class="info-tag">${occ}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function adjustBrightness(hex, percent) {
+            const num = parseInt(hex.replace("#", ""), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255))
+                .toString(16).slice(1);
+        }
+
+        function showColorDetail(color) {
+            document.getElementById('modalColorName').textContent = color.name;
+            document.getElementById('modalColorPreview').style.background = color.hex;
+            document.getElementById('modalTemperature').textContent = color.temperature;
+            
+            const clothingList = document.getElementById('modalClothing');
+            clothingList.innerHTML = color.clothing.map(item => `<li>${item}</li>`).join('');
+            
+            const combinations = document.getElementById('modalCombinations');
+            combinations.innerHTML = color.combinations.map(hex => 
+                `<div class="combo-color" style="background: ${hex}" title="${hex}"></div>`
+            ).join('');
+            
+            const occasions = document.getElementById('modalOccasions');
+            occasions.innerHTML = color.occasions.map(occ => 
+                `<span class="info-tag">${occ}</span>`
+            ).join('');
+            
+            document.getElementById('colorModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('colorModal').classList.remove('active');
+        }
+
+        document.getElementById('colorModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        renderColors();
+    </script>
+</body>
+</html>

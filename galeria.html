@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closet Stylized - Galería de Diseños</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0b2e 20%, #2d1b4e 40%, #1a1a2e 60%, #0f0f0f 100%);
+            min-height: 100vh;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efectos de fondo galáctico mejorados */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at top left, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at top right, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(88, 28, 135, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 30% 60%, rgba(147, 51, 234, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: -1;
+            animation: cosmic-drift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes cosmic-drift {
+            0% { transform: translateX(0) translateY(0) scale(1); }
+            100% { transform: translateX(10px) translateY(-10px) scale(1.02); }
+        }
+
+        .header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(147, 51, 234, 0.6);
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.4s ease;
+            padding: 12px 20px;
+            border-radius: 25px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(168, 85, 247, 0.1));
+            border-radius: 25px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav a:hover::before {
+            opacity: 1;
+        }
+
+        .nav a:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4);
+        }
+
+        .cart {
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            position: relative;
+            border: 1px solid rgba(192, 132, 252, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.5);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a0b2e 25%, #2d1b4e 50%, #1a1a2e 75%, #0a0a0a 100%);
+            padding: 100px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(147, 51, 234, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(88, 28, 135, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.03) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 50%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(147, 51, 234, 0.8);
+            letter-spacing: -1px;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 50px;
+            color: #c7d2fe;
+            line-height: 1.6;
+        }
+
+        .community-section {
+            padding: 80px 30px;
+            position: relative;
+        }
+
+        .section-title {
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            border-radius: 2px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: linear-gradient(145deg, rgba(10, 10, 10, 0.8), rgba(88, 28, 135, 0.15));
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.05), rgba(88, 28, 135, 0.05));
+            border-radius: 25px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(147, 51, 234, 0.5);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(147, 51, 234, 0.4);
+        }
+
+        .product-card:hover::before {
+            opacity: 1;
+        }
+
+        .product-image {
+            height: 250px;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(168, 85, 247, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(147, 51, 234, 0.1) 0%, 
+                transparent 50%, 
+                rgba(168, 85, 247, 0.1) 100%);
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 15px;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.4s ease;
+            object-fit: cover;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 10px 18px;
+            font-size: 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            z-index: 10;
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-info {
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #e0e7ff;
+            font-weight: 700;
+        }
+
+        .sales-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 15px 0;
+            border-top: 1px solid rgba(147, 51, 234, 0.3);
+            border-bottom: 1px solid rgba(147, 51, 234, 0.3);
+        }
+
+        .sales-count {
+            color: #a855f7;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .sales-total {
+            color: #c084fc;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .stars {
+            color: #ffd700;
+            margin: 20px 0;
+            font-size: 20px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .add-button {
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .add-button:hover::before {
+            left: 100%;
+        }
+
+        .add-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(147, 51, 234, 0.5);
+        }
+
+        .publish-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .publish-toggle input[type="checkbox"] {
+            margin-right: 12px;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #9333ea;
+            border-radius: 6px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(147, 51, 234, 0.1);
+        }
+
+        .publish-toggle input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            border-color: #c084fc;
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.5);
+        }
+
+        .publish-toggle input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .publish-toggle label {
+            color: #c7d2fe;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .copyright-section {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px 0;
+            border-top: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        /* Efectos galácticos mejorados */
+        .galaxy-element {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #9333ea 0%, rgba(147, 51, 234, 0.5) 50%, transparent 70%);
+            border-radius: 50%;
+            animation: galaxy-drift 12s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.8);
+        }
+
+        .nebula-bg {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.2) 0%, rgba(88, 28, 135, 0.15) 40%, transparent 70%);
+            border-radius: 50%;
+            animation: nebula 25s linear infinite;
+            filter: blur(1px);
+        }
+
+        @keyframes galaxy-drift {
+            0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+            25% { transform: translateX(15px) translateY(-8px) scale(1.2); }
+            50% { transform: translateX(-8px) translateY(15px) scale(0.8); }
+            75% { transform: translateX(12px) translateY(8px) scale(1.1); }
+        }
+
+        @keyframes nebula {
+            0% { transform: rotate(0deg) scale(1); opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { transform: rotate(360deg) scale(1); opacity: 0.3; }
+        }
+
+        /* Responsive mejorado */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .nav {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 0 20px;
+            }
+
+            .community-section {
+                padding: 50px 20px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px;
+            }
+        }
+
+        /* Efectos adicionales */
+        .floating-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(147, 51, 234, 0.6);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(147, 51, 234, 0.8);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(90deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+            75% { transform: translateY(-15px) rotate(270deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="nebula-bg" style="top: 15%; left: 10%; animation-delay: 0s;"></div>
+    <div class="nebula-bg" style="top: 60%; right: 15%; animation-delay: 8s;"></div>
+    <div class="nebula-bg" style="top: 80%; left: 70%; animation-delay: 15s;"></div>
+    <div class="galaxy-element" style="top: 25%; left: 75%; animation-delay: 2s;"></div>
+    <div class="galaxy-element" style="top: 70%; left: 15%; animation-delay: 5s;"></div>
+    <div class="galaxy-element" style="top: 45%; right: 8%; animation-delay: 9s;"></div>
+    <div class="galaxy-element" style="top: 10%; left: 40%; animation-delay: 12s;"></div>
+
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">Closet Stylized</div>
+            <nav class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="diseño.html">Diseñar</a>
+                <a href="galeria.html">Galería</a>
+                <a href="inicio_de_sesion.html">Iniciar Sesión</a>
+                <a href="bordados.html">Diseño Bordado</a>
+                <a href="moodboard.html">Colaboraciones</a>
+                <a href="restricciones.html">Consejos de Diseño</a>
+                <a href="carrito.html">Carrito</a>
+                
+            </nav>
+        </div>
+    </div>
+    
+
+    
+    <div class="community-section">
+        <h2 class="section-title">Descubre Diseños de Nuestra Comunidad</h2>
+        
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://i.pinimg.com/736x/38/0f/fe/380ffe23add20a4a765e68554034ebe8.jpg" alt="Camiseta Urban Galaxy" id="product-image-1">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Camiseta Urban Galaxy</h3>
+                    <div class="sales-info">
+                        <span class="sales-count">Ventas: 24</span>
+                        <span class="sales-total">$768.000 COP</span>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <button class="add-button" onclick="addToCart(1)">Añadir al carrito</button>
+                    <div class="publish-toggle">
+                        <input type="checkbox" id="publish-1" checked>
+                        <label for="publish-1">Publicar</label>
+                    </div>
+                    <div class="copyright-section">
+                        © Derechos reservados al creador
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://i.pinimg.com/1200x/42/59/6c/42596c014118964358be19c1671ec93e.jpg" alt="Chaqueta Premium Cosmic" id="product-image-2">
+                </div>
+                <div class="sale-badge">Oferta</div>
+                <div class="product-info">
+                    <h3 class="product-title">Chaqueta Premium Cosmic</h3>
+                    <div class="sales-info">
+                        <span class="sales-count">Ventas: 18</span>
+                        <span class="sales-total">$1.530.000 COP</span>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <button class="add-button" onclick="addToCart(2)">Añadir al carrito</button>
+                    <div class="publish-toggle">
+                        <input type="checkbox" id="publish-2" checked>
+                        <label for="publish-2">Publicar</label>
+                    </div>
+                    <div class="copyright-section">
+                        © Derechos reservados al creador
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkC2XBDrYG3rU34X4F8oYRNiTwu71U29MYhQ&s" alt="Pantalón Stellar Casual" id="product-image-3">
+                </div>
+                <div class="sale-badge">Oferta</div>
+                <div class="product-info">
+                    <h3 class="product-title">Pantalón Stellar Casual</h3>
+                    <div class="sales-info">
+                        <span class="sales-count">Ventas: 15</span>
+                        <span class="sales-total">$630.000 COP</span>
+                    </div>
+                    <div class="stars">★★★★☆</div>
+                    <button class="add-button" onclick="addToCart(3)">Añadir al carrito</button>
+                    <div class="publish-toggle">
+                        <input type="checkbox" id="publish-3" checked>
+                        <label for="publish-3">Publicar</label>
+                    </div>
+                    <div class="copyright-section">
+                        © Derechos reservados al creador
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://i.pinimg.com/1200x/42/62/68/4262687c84494174cf5208cf9545cccc.jpg" alt="Buso Deportivo Nebula" id="product-image-4">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Buso Deportivo Nebula</h3>
+                    <div class="sales-info">
+                        <span class="sales-count">Ventas: 21</span>
+                        <span class="sales-total">$945.000 COP</span>
+                    </div>
+                    <div class="stars">★★★★★</div>
+                    <button class="add-button" onclick="addToCart(4)">Añadir al carrito</button>
+                    <div class="publish-toggle">
+                        <input type="checkbox" id="publish-4" checked>
+                        <label for="publish-4">Publicar</label>
+                    </div>
+                    <div class="copyright-section">
+                        © Derechos reservados al creador
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cartCount = 0;
+
+        function addToCart(productId) {
+            cartCount++;
+            const cartElement = document.querySelector('.cart');
+            cartElement.textContent = `🛒 ${cartCount}`;
+            
+            // Mostrar notificación
+            showNotification(`✨ Producto añadido al carrito`, 'success');
+            
+            // Efecto visual en el botón
+            const button = event.target;
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = 'translateY(-3px)';
+            }, 150);
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, ${type === 'success' ? '#10b981, #34d399' : '#9333ea, #c084fc'});
+                color: white;
+                padding: 15px 25px;
+                border-radius: 15px;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Añadir estilos de animación para las notificaciones
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Función para cargar imágenes diseñadas desde la sección "diseñar"
+        function cargarImagenDiseñada(idProducto, urlImagen) {
+            const imagenElement = document.getElementById('product-image-' + idProducto);
+            if (imagenElement) {
+                imagenElement.src = urlImagen;
+            }
+        }
+        
+        // Función para actualizar estado de publicación
+        function actualizarPublicacion() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const productId = this.id.split('-')[1];
+                    const status = this.checked ? 'Publicado' : 'No publicado';
+                    showNotification(`📢 Producto ${productId} ${status.toLowerCase()}`, 'info');
+                    console.log(`Producto ${productId} publicación: ${status}`);
+                });
+            });
+        }
+        
+        // Crear partículas flotantes
+        function createFloatingParticles() {
+            const particleCount = 25;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('floating-particle');
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+                document.body.appendChild(particle);
+            }
+        }
+        
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', function() {
+            actualizarPublicacion();
+            createFloatingParticles();
+            
+            // Efectos adicionales para mejorar la experiencia
+            const cards = document.querySelectorAll('.product-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transition = 'all 0.4s ease';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Efecto parallax suave para elementos de fondo
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const nebulas = document.querySelectorAll('.nebula-bg');
+                const galaxies = document.querySelectorAll('.galaxy-element');
+                
+                nebulas.forEach((nebula, index) => {
+                    const speed = 0.5 + (index * 0.2);
+                    nebula.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+                });
+                
+                galaxies.forEach((galaxy, index) => {
+                    const speed = 0.3 + (index * 0.1);
+                    galaxy.style.transform = `translateY(${scrolled * speed}px)`;
+                });
+            });
+
+            // Animación de entrada para las tarjetas
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+        });
+
+        // Función para simular carga de nuevos productos
+        function loadMoreProducts() {
+            // Esta función se puede usar para cargar más productos dinámicamente
+            console.log('Cargando más productos...');
+        }
+
+        // Función mejorada para manejar errores de imagen
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjMkQxQjRFIi8+CjxwYXRoIGQ9Ik0xMDAgNTBMMTUwIDEwMEwxMDAgMTUwTDUwIDEwMEwxMDAgNTBaIiBmaWxsPSIjOTMzM0VBIiBvcGFjaXR5PSIwLjUiLz4KPHN2Zz4=';
+                this.style.filter = 'blur(2px)';
+            });
+        });
+    </script>
+</body>
+</html>

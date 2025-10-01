@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closet Stylized - Diseña con estilo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #2d1b4e 0%, #1e0b36 50%, #0f0520 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            position: relative;
+        }
+
+        /* Efecto de partículas espaciales */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 25px 25px, rgba(255,255,255,0.2), transparent),
+                radial-gradient(1px 1px at 75px 75px, rgba(255,255,255,0.1), transparent),
+                radial-gradient(1px 1px at 125px 125px, rgba(255,255,255,0.15), transparent);
+            background-repeat: repeat;
+            background-size: 150px 150px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* Header */
+        header {
+            background: rgba(20, 10, 40, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 4px 30px rgba(168, 85, 247, 0.3);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            position: relative;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #a855f7;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .nav-links a:hover {
+            color: #a855f7;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            background: rgba(168, 85, 247, 0.2);
+            padding: 12px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            color: white;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #a855f7;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: rgba(30, 20, 50, 0.6);
+            backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(168, 85, 247, 0.3);
+            padding: 20px;
+        }
+
+        .sidebar h3 {
+            color: #a855f7;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: block;
+            transition: all 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+        }
+
+        /* Main Content */
+        .content-area {
+            flex: 1;
+            overflow: auto;
+        }
+
+        .workspace-tab {
+            display: none;
+            padding: 30px;
+        }
+
+        .workspace-tab.active {
+            display: block;
+        }
+
+        /* Dashboard */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #f9fafb;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            background: rgba(30, 20, 50, 0.6);
+            color: #d1d5db;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: #a855f7;
+            color: white;
+            border-color: #a855f7;
+        }
+
+        /* Design Grid */
+        .designs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .design-card {
+            background: rgba(30, 20, 50, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .design-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(168, 85, 247, 0.6);
+            box-shadow: 0 15px 30px rgba(168, 85, 247, 0.2);
+        }
+
+        .new-board-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            border: 2px dashed rgba(168, 85, 247, 0.5);
+            background: rgba(30, 20, 50, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .new-board-card:hover {
+            border-color: #a855f7;
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .new-board-icon {
+            width: 48px;
+            height: 48px;
+            color: rgba(168, 85, 247, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .new-board-text {
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        .design-image {
+            height: 200px;
+            background: rgba(15, 5, 32, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .design-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .design-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            gap: 5px;
+        }
+
+        .design-card:hover .design-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .action-btn.delete-btn {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+        }
+
+        .action-btn.delete-btn:hover {
+            background: rgba(220, 38, 38, 1);
+        }
+
+        .design-info {
+            padding: 20px;
+        }
+
+        .design-title {
+            font-weight: 600;
+            color: #f9fafb;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .design-meta {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* Design Tab */
+        .design-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid #a855f7;
+            color: #a855f7;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #a855f7;
+            color: white;
+        }
+
+        .design-workspace {
+            display: flex;
+            gap: 30px;
+        }
+
+        .tools-panel {
+            width: 250px;
+            background: rgba(30, 20, 50, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .tool-section {
+            margin-bottom: 25px;
+        }
+
+        .tool-section h3 {
+            color: #a855f7;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .tool-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tool-btn {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            color: #d1d5db;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 12px;
+            position: relative;
+        }
+
+        .tool-btn.active, .tool-btn:hover {
+            background: #a855f7;
+            color: white;
+            border-color: #a855f7;
+        }
+
+        .color-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            padding: 0;
+            margin: 5px;
+        }
+
+        .canvas-container {
+            flex: 1;
+            background: rgba(30, 20, 50, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            position: relative;
+        }
+
+        #designCanvas {
+            width: 100%;
+            height: 500px;
+            background: rgba(15, 5, 32, 0.8);
+            border-radius: 10px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            cursor: crosshair;
+            position: absolute;
+            z-index: 2;
+        }
+
+        #templateOverlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            height: 500px;
+            pointer-events: none;
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .canvas-tools {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .canvas-tool-btn {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid #a855f7;
+            color: #a855f7;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+
+        .canvas-tool-btn:hover {
+            background: #a855f7;
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            background: rgba(30, 20, 50, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .modal h3 {
+            color: #f9fafb;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #d1d5db;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(15, 5, 32, 0.8);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #a855f7;
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .radio-item input[type="radio"] {
+            width: auto;
+            accent-color: #a855f7;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #a855f7;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #9333ea;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            color: #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(168, 85, 247, 0.3);
+            border-color: #a855f7;
+        }
+
+        .brush-size {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .brush-size input {
+            flex: 1;
+        }
+
+        .brush-preview {
+            width: 20px;
+            height: 20px;
+            background: #a855f7;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        /* Hidden class for filtered items */
+        .hidden-item {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .design-workspace {
+                flex-direction: column;
+            }
+            
+            .tools-panel {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Closet Stylized</div>
+                <div class="nav-links">
+                   <a href="index.html">Inicio</a>
+                   <a href="diseño.html">Diseñar</a>
+                   <a href="galeria.html">Galería</a>
+                   <a href="inicio_de_sesion.html">Iniciar Sesión</a>
+                   <a href="bordados.html">diseño bordado</a>
+                   <a href="moodboard.html">colaboraciones</a>
+                   <a href="restricciones.html">consejos de diseño</a>
+                </div>
+                
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3>Herramientas</h3>
+            <ul>
+                <li><a href="colores.html" id="colorsBtn">🎨 Colores</a></li>
+                <li><a href="texturas.html" id="texturesBtn">🧵 Texturas</a></li>
+            </ul>
+            
+            <h3 style="margin-top: 30px;">Colecciones</h3>
+            <ul>
+                <li><a href="#" id="allCollectionsBtn">📁 Todas</a></li>
+                <li><a href="#" id="myCollectionsBtn">👤 Mis Diseños</a></li>
+                <li><a href="#" id="sharedBtn">👥 Compartidos</a></li>
+                <li><a href="#" id="newCollectionBtn">➕ Nueva Colección</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Dashboard Tab -->
+            <div class="workspace-tab active" id="dashboard-tab">
+                <div class="dashboard-header">
+                    <h2 class="dashboard-title">Tableros recientes</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" id="allBtn">Todos</button>
+                        <button class="filter-btn" id="myDesignsBtn">Mis Diseños</button>
+                        <button class="filter-btn" id="collaborationsBtn">Colaboraciones</button>
+                    </div>
+                </div>
+
+                <!-- Design Grid -->
+                <div class="designs-grid" id="designs-grid">
+                    <!-- New Board Card -->
+                    <div class="design-card new-board-card" id="createNewBoard">
+                        <svg class="new-board-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        <p class="new-board-text">Nuevo tablero</p>
+                    </div>
+
+                    <!-- Existing Design Cards -->
+                    <div class="design-card sample-design" data-type="sample">
+                        <div class="design-image">
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #a855f7; font-size: 24px;">👗</div>
+                        </div>
+                        <div class="design-actions">
+                            <button class="action-btn">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="design-info">
+                            <h3 class="design-title">Vestido De Gala</h3>
+                            <p class="design-meta">Última modificación: hoy</p>
+                        </div>
+                    </div>
+
+                    <div class="design-card sample-design" data-type="collaboration">
+                        <div class="design-image">
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #a855f7; font-size: 24px;">👕</div>
+                        </div>
+                        <div class="design-actions">
+                            <button class="action-btn">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="design-info">
+                            <h3 class="design-title">Look Urbano</h3>
+                            <p class="design-meta">Colaboración con 3 personas</p>
+                        </div>
+                    </div>
+
+                    <div class="design-card sample-design" data-type="sample">
+                        <div class="design-image">
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #a855f7; font-size: 24px;">🌞</div>
+                        </div>
+                        <div class="design-actions">
+                            <button class="action-btn">
+                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 5v.01M12 12v.01M12 19v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="design-info">
+                            <h3 class="design-title">Colección Verano</h3>
+                            <p class="design-meta">14 diseños</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design Tab -->
+            <div class="workspace-tab" id="design-tab">
+                <div class="design-header">
+                    <button class="back-btn" id="backToDashboardBtn">← Volver al Dashboard</button>
+                    <h2 class="dashboard-title">Nuevo Diseño</h2>
+                </div>
+
+                <div class="design-workspace">
+                    <!-- Tools Panel -->
+                    <div class="tools-panel">
+                        <div class="tool-section">
+                            <h3>Herramientas</h3>
+                            <div class="tool-buttons">
+                                <button class="tool-btn active" data-tool="brush">🖌️ Pincel</button>
+                                <button class="tool-btn" data-tool="eraser">🧽 Borrador</button>
+                                <button class="tool-btn" data-tool="line">📐 Línea</button>
+                                <button class="tool-btn" data-tool="circle">🔵 Círculo</button>
+                                <button class="tool-btn" data-tool="rectangle">▢ Rectángulo</button>
+                            </div>
+                            <div class="brush-size">
+                                <label style="color: #d1d5db; font-size: 12px;">Tamaño:</label>
+                                <input type="range" id="brushSize" min="1" max="20" value="3">
+                                <div class="brush-preview" id="brushPreview"></div>
+                            </div>
+                        </div>
+
+                        <div class="tool-section">
+                            <h3>Colores</h3>
+                            <div class="tool-buttons">
+                                <button class="tool-btn color-btn active" data-color="#a855f7" style="background: #a855f7;"></button>
+                                <button class="tool-btn color-btn" data-color="#ff6b6b" style="background: #ff6b6b;"></button>
+                                <button class="tool-btn color-btn" data-color="#4ecdc4" style="background: #4ecdc4;"></button>
+                                <button class="tool-btn color-btn" data-color="#45b7d1" style="background: #45b7d1;"></button>
+                                <button class="tool-btn color-btn" data-color="#96ceb4" style="background: #96ceb4;"></button>
+                                <button class="tool-btn color-btn" data-color="#feca57" style="background: #feca57;"></button>
+                                <button class="tool-btn color-btn" data-color="#ff9ff3" style="background: #ff9ff3;"></button>
+                                <button class="tool-btn color-btn" data-color="#ffffff" style="background: #ffffff;"></button>
+                                <button class="tool-btn color-btn" data-color="#000000" style="background: #000000;"></button>
+                            </div>
+                        </div>
+
+                        <div class="tool-section">
+                            <h3>Plantillas</h3>
+                            <div class="tool-buttons">
+                                <button class="tool-btn template-btn" data-template="dress">👗 Vestido</button>
+                                <button class="tool-btn template-btn" data-template="shirt">👔 Camisa</button>
+                                <button class="tool-btn template-btn" data-template="pants">👖 Pantalón</button>
+                                <button class="tool-btn template-btn" data-template="jacket">🧥 Chaqueta</button>
+                                <button class="tool-btn template-btn" data-template="tshirt">👕 Camiseta</button>
+                                <button class="tool-btn template-btn" data-template="clear">🗑️ Limpiar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Container -->
+                    <div class="canvas-container">
+                        <div class="canvas-tools">
+                            <button class="canvas-tool-btn" id="saveDesignBtn">💾 Guardar</button>
+                            <button class="canvas-tool-btn" id="undoBtn">🔄 Deshacer</button>
+                            <button class="canvas-tool-btn" id="redoBtn">↩️ Rehacer</button>
+                            <button class="canvas-tool-btn" id="clearCanvasBtn">🗑️ Limpiar</button>
+                        </div>
+                        <canvas id="templateOverlay" width="800" height="500"></canvas>
+                        <canvas id="designCanvas" width="800" height="500"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for New Collection -->
+    <div id="newCollectionModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Crear nueva colección</h3>
+            <div class="form-group">
+                <label for="collectionName">Nombre</label>
+                <input type="text" id="collectionName" placeholder="Nombre de la colección">
+            </div>
+            <div class="form-group">
+                <label for="collectionDesc">Descripción</label>
+                <textarea id="collectionDesc" rows="3" placeholder="Describe tu colección..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Privacidad</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input id="public" name="privacy" type="radio" checked>
+                        <label for="public">Pública</label>
+                    </div>
+                    <div class="radio-item">
+                        <input id="private" name="privacy" type="radio">
+                        <label for="private">Privada</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="cancelCollectionBtn" class="btn btn-secondary">Cancelar</button>
+                <button id="createCollectionBtn" class="btn btn-primary">Crear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Save Design -->
+    <div id="saveDesignModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Guardar Diseño</h3>
+            <div class="form-group">
+                <label for="designName">Nombre del diseño</label>
+                <input type="text" id="designName" placeholder="Ej: Mi vestido elegante">
+            </div>
+            <div class="form-group">
+                <label for="designDescription">Descripción</label>
+                <textarea id="designDescription" rows="3" placeholder="Describe tu diseño..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Compartir como</label>
+                <div class="radio-group">
+                    <div class="radio-item">
+                        <input id="saveAsPersonal" name="saveType" type="radio" checked>
+                        <label for="saveAsPersonal">Mi Diseño</label>
+                    </div>
+                    <div class="radio-item">
+                        <input id="saveAsShared" name="saveType" type="radio">
+                        <label for="saveAsShared">Compartido</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="cancelSaveBtn" class="btn btn-secondary">Cancelar</button>
+                <button id="confirmSaveBtn" class="btn btn-primary">Guardar Diseño</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentTool = 'brush';
+        let currentColor = '#a855f7';
+        let currentBrushSize = 3;
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let undoStack = [];
+        let redoStack = [];
+        let currentTemplate = null;
+        let savedDesigns = {
+            personal: [],
+            shared: [],
+            collaborations: []
+        };
+
+        // Load saved designs from localStorage if available
+        function loadSavedDesigns() {
+            const saved = localStorage.getItem('closetStylezedDesigns');
+            if (saved) {
+                savedDesigns = JSON.parse(saved);
+            }
+        }
+
+        // Save designs to localStorage
+        function saveDesigsToStorage() {
+            localStorage.setItem('closetStylezedDesigns', JSON.stringify(savedDesigns));
+        }
+
+        // Canvas management
+        function initCanvas() {
+            const canvas = document.getElementById('designCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            if (canvas && ctx) {
+                // Save initial state
+                saveCanvasState();
+                
+                // Set up event listeners
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mouseout', stopDrawing);
+                
+                // Touch events for mobile
+                canvas.addEventListener('touchstart', handleTouch);
+                canvas.addEventListener('touchmove', handleTouch);
+                canvas.addEventListener('touchend', stopDrawing);
+                
+                // Set canvas properties
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+            }
+        }
+
+        // Handle touch events
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                           e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            e.target.dispatchEvent(mouseEvent);
+        }
+
+        // Get mouse position relative to canvas
+        function getMousePos(canvas, e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: (e.clientX - rect.left) * (canvas.width / rect.width),
+                y: (e.clientY - rect.top) * (canvas.height / rect.height)
+            };
+        }
+
+        // Start drawing
+        function startDrawing(e) {
+            const canvas = document.getElementById('designCanvas');
+            const pos = getMousePos(canvas, e);
+            
+            isDrawing = true;
+            lastX = pos.x;
+            lastY = pos.y;
+            
+            if (currentTool === 'brush' || currentTool === 'eraser') {
+                draw(e);
+            }
+        }
+
+        // Draw function
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const canvas = document.getElementById('designCanvas');
+            const ctx = canvas.getContext('2d');
+            const pos = getMousePos(canvas, e);
+            
+            ctx.globalCompositeOperation = currentTool === 'eraser' ? 'destination-out' : 'source-over';
+            ctx.strokeStyle = currentTool === 'eraser' ? 'rgba(0,0,0,1)' : currentColor;
+            ctx.lineWidth = currentBrushSize;
+            
+            switch (currentTool) {
+                case 'brush':
+                case 'eraser':
+                    ctx.beginPath();
+                    ctx.moveTo(lastX, lastY);
+                    ctx.lineTo(pos.x, pos.y);
+                    ctx.stroke();
+                    lastX = pos.x;
+                    lastY = pos.y;
+                    break;
+                    
+                case 'line':
+                    // Clear and redraw for preview
+                    if (undoStack.length > 0) {
+                        const img = new Image();
+                        img.onload = function() {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(img, 0, 0);
+                            ctx.beginPath();
+                            ctx.moveTo(lastX, lastY);
+                            ctx.lineTo(pos.x, pos.y);
+                            ctx.stroke();
+                        };
+                        img.src = undoStack[undoStack.length - 1];
+                    }
+                    break;
+                    
+                case 'rectangle':
+                    if (undoStack.length > 0) {
+                        const img = new Image();
+                        img.onload = function() {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(img, 0, 0);
+                            ctx.beginPath();
+                            ctx.rect(lastX, lastY, pos.x - lastX, pos.y - lastY);
+                            ctx.stroke();
+                        };
+                        img.src = undoStack[undoStack.length - 1];
+                    }
+                    break;
+                    
+                case 'circle':
+                    if (undoStack.length > 0) {
+                        const img = new Image();
+                        img.onload = function() {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(img, 0, 0);
+                            const radius = Math.sqrt(Math.pow(pos.x - lastX, 2) + Math.pow(pos.y - lastY, 2));
+                            ctx.beginPath();
+                            ctx.arc(lastX, lastY, radius, 0, 2 * Math.PI);
+                            ctx.stroke();
+                        };
+                        img.src = undoStack[undoStack.length - 1];
+                    }
+                    break;
+            }
+        }
+
+        // Stop drawing
+        function stopDrawing() {
+            if (isDrawing) {
+                isDrawing = false;
+                saveCanvasState();
+            }
+        }
+
+        // Save canvas state for undo/redo
+        function saveCanvasState() {
+            const canvas = document.getElementById('designCanvas');
+            if (canvas) {
+                undoStack.push(canvas.toDataURL());
+                if (undoStack.length > 50) {
+                    undoStack.shift(); // Keep only last 50 states
+                }
+                redoStack = []; // Clear redo stack when new action is performed
+            }
+        }
+
+        // Undo function
+        function undo() {
+            if (undoStack.length > 1) {
+                const canvas = document.getElementById('designCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                redoStack.push(undoStack.pop());
+                const previousState = undoStack[undoStack.length - 1];
+                
+                const img = new Image();
+                img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = previousState;
+            }
+        }
+
+        // Redo function
+        function redo() {
+            if (redoStack.length > 0) {
+                const canvas = document.getElementById('designCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                const nextState = redoStack.pop();
+                undoStack.push(nextState);
+                
+                const img = new Image();
+                img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                };
+                img.src = nextState;
+            }
+        }
+
+        // Clear canvas
+        function clearCanvas() {
+            const canvas = document.getElementById('designCanvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            saveCanvasState();
+        }
+
+        // Template functions
+        function drawTemplate(template) {
+            const canvas = document.getElementById('templateOverlay');
+            const ctx = canvas.getContext('2d');
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#6b7280';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            switch (template) {
+                case 'dress':
+                    // Dress silhouette
+                    ctx.beginPath();
+                    // Neckline
+                    ctx.arc(centerX, centerY - 150, 30, Math.PI, 0, false);
+                    // Left shoulder to waist
+                    ctx.moveTo(centerX - 30, centerY - 150);
+                    ctx.lineTo(centerX - 60, centerY - 50);
+                    // Right shoulder to waist
+                    ctx.moveTo(centerX + 30, centerY - 150);
+                    ctx.lineTo(centerX + 60, centerY - 50);
+                    // Waist to hem (flared)
+                    ctx.moveTo(centerX - 60, centerY - 50);
+                    ctx.quadraticCurveTo(centerX - 100, centerY + 50, centerX - 80, centerY + 150);
+                    ctx.moveTo(centerX + 60, centerY - 50);
+                    ctx.quadraticCurveTo(centerX + 100, centerY + 50, centerX + 80, centerY + 150);
+                    // Hem
+                    ctx.moveTo(centerX - 80, centerY + 150);
+                    ctx.quadraticCurveTo(centerX, centerY + 160, centerX + 80, centerY + 150);
+                    ctx.stroke();
+                    break;
+                    
+                case 'shirt':
+                    // Shirt silhouette
+                    ctx.beginPath();
+                    // Collar
+                    ctx.moveTo(centerX - 20, centerY - 150);
+                    ctx.lineTo(centerX - 20, centerY - 120);
+                    ctx.lineTo(centerX + 20, centerY - 120);
+                    ctx.lineTo(centerX + 20, centerY - 150);
+                    // Shoulders
+                    ctx.moveTo(centerX - 20, centerY - 150);
+                    ctx.lineTo(centerX - 80, centerY - 130);
+                    ctx.lineTo(centerX - 80, centerY - 80);
+                    ctx.moveTo(centerX + 20, centerY - 150);
+                    ctx.lineTo(centerX + 80, centerY - 130);
+                    ctx.lineTo(centerX + 80, centerY - 80);
+                    // Body
+                    ctx.moveTo(centerX - 80, centerY - 80);
+                    ctx.lineTo(centerX - 70, centerY + 100);
+                    ctx.moveTo(centerX + 80, centerY - 80);
+                    ctx.lineTo(centerX + 70, centerY + 100);
+                    // Bottom hem
+                    ctx.moveTo(centerX - 70, centerY + 100);
+                    ctx.lineTo(centerX + 70, centerY + 100);
+                    ctx.stroke();
+                    break;
+                    
+                case 'pants':
+                    // Pants silhouette
+                    ctx.beginPath();
+                    // Waistband
+                    ctx.moveTo(centerX - 60, centerY - 150);
+                    ctx.lineTo(centerX + 60, centerY - 150);
+                    // Left leg
+                    ctx.moveTo(centerX - 60, centerY - 150);
+                    ctx.lineTo(centerX - 50, centerY + 150);
+                    ctx.moveTo(centerX - 10, centerY - 150);
+                    ctx.lineTo(centerX - 20, centerY + 150);
+                    ctx.moveTo(centerX - 50, centerY + 150);
+                    ctx.lineTo(centerX - 20, centerY + 150);
+                    // Right leg
+                    ctx.moveTo(centerX + 60, centerY - 150);
+                    ctx.lineTo(centerX + 50, centerY + 150);
+                    ctx.moveTo(centerX + 10, centerY - 150);
+                    ctx.lineTo(centerX + 20, centerY + 150);
+                    ctx.moveTo(centerX + 50, centerY + 150);
+                    ctx.lineTo(centerX + 20, centerY + 150);
+                    ctx.stroke();
+                    break;
+                    
+                case 'jacket':
+                    // Jacket silhouette
+                    ctx.beginPath();
+                    // Collar
+                    ctx.moveTo(centerX - 25, centerY - 150);
+                    ctx.lineTo(centerX - 25, centerY - 110);
+                    ctx.lineTo(centerX + 25, centerY - 110);
+                    ctx.lineTo(centerX + 25, centerY - 150);
+                    // Shoulders
+                    ctx.moveTo(centerX - 25, centerY - 150);
+                    ctx.lineTo(centerX - 90, centerY - 130);
+                    ctx.lineTo(centerX - 90, centerY - 70);
+                    ctx.moveTo(centerX + 25, centerY - 150);
+                    ctx.lineTo(centerX + 90, centerY - 130);
+                    ctx.lineTo(centerX + 90, centerY - 70);
+                    // Body
+                    ctx.moveTo(centerX - 90, centerY - 70);
+                    ctx.lineTo(centerX - 75, centerY + 80);
+                    ctx.moveTo(centerX + 90, centerY - 70);
+                    ctx.lineTo(centerX + 75, centerY + 80);
+                    // Bottom
+                    ctx.moveTo(centerX - 75, centerY + 80);
+                    ctx.lineTo(centerX + 75, centerY + 80);
+                    // Lapels
+                    ctx.moveTo(centerX, centerY - 110);
+                    ctx.lineTo(centerX - 40, centerY - 50);
+                    ctx.moveTo(centerX, centerY - 110);
+                    ctx.lineTo(centerX + 40, centerY - 50);
+                    ctx.stroke();
+                    break;
+                    
+                case 'tshirt':
+                    // T-shirt silhouette
+                    ctx.beginPath();
+                    // Neckline
+                    ctx.arc(centerX, centerY - 130, 25, Math.PI, 0, false);
+                    // Shoulders
+                    ctx.moveTo(centerX - 25, centerY - 130);
+                    ctx.lineTo(centerX - 90, centerY - 110);
+                    ctx.lineTo(centerX - 90, centerY - 60);
+                    ctx.moveTo(centerX + 25, centerY - 130);
+                    ctx.lineTo(centerX + 90, centerY - 110);
+                    ctx.lineTo(centerX + 90, centerY - 60);
+                    // Body
+                    ctx.moveTo(centerX - 90, centerY - 60);
+                    ctx.lineTo(centerX - 70, centerY + 100);
+                    ctx.moveTo(centerX + 90, centerY - 60);
+                    ctx.lineTo(centerX + 70, centerY + 100);
+                    // Bottom hem
+                    ctx.moveTo(centerX - 70, centerY + 100);
+                    ctx.lineTo(centerX + 70, centerY + 100);
+                    ctx.stroke();
+                    break;
+            }
+            
+            currentTemplate = template;
+        }
+
+        // Update brush preview
+        function updateBrushPreview() {
+            const preview = document.getElementById('brushPreview');
+            const size = document.getElementById('brushSize');
+            if (preview && size) {
+                const brushSize = size.value;
+                preview.style.width = Math.max(8, brushSize) + 'px';
+                preview.style.height = Math.max(8, brushSize) + 'px';
+                preview.style.backgroundColor = currentColor;
+            }
+        }
+
+        // Create design card
+        function createDesignCard(design) {
+            const designCard = document.createElement('div');
+            designCard.className = 'design-card';
+            designCard.dataset.type = design.type;
+            designCard.dataset.id = design.id;
+            
+            designCard.innerHTML = `
+                <div class="design-image">
+                    <img src="${design.imageData}" alt="${design.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="design-actions">
+                    <button class="action-btn" onclick="editDesign('${design.id}')" title="Editar diseño">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                            <path d="m18.5 2.5 a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                    </button>
+                    <button class="action-btn delete-btn" onclick="deleteDesign('${design.id}')" title="Eliminar diseño">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14zM10 11v6M14 11v6"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="design-info">
+                    <h3 class="design-title">${design.name}</h3>
+                    <p class="design-meta">${design.description || 'Guardado: ' + design.date}</p>
+                </div>
+            `;
+            
+            return designCard;
+        }
+
+        // Save current design
+        function saveCurrentDesign() {
+            const canvas = document.getElementById('designCanvas');
+            const templateCanvas = document.getElementById('templateOverlay');
+            
+            if (canvas) {
+                // Create a combined canvas with template and design
+                const combinedCanvas = document.createElement('canvas');
+                const combinedCtx = combinedCanvas.getContext('2d');
+                combinedCanvas.width = canvas.width;
+                combinedCanvas.height = canvas.height;
+                
+                // Draw template first (background)
+                if (currentTemplate) {
+                    combinedCtx.drawImage(templateCanvas, 0, 0);
+                }
+                
+                // Draw design on top
+                combinedCtx.drawImage(canvas, 0, 0);
+                
+                return combinedCanvas.toDataURL();
+            }
+            
+            return null;
+        }
+
+        // Filter designs
+        function filterDesigns(filter) {
+            const designsGrid = document.getElementById('designs-grid');
+            const cards = designsGrid.querySelectorAll('.design-card:not(.new-board-card)');
+            
+            cards.forEach(card => {
+                const type = card.dataset.type;
+                
+                switch (filter) {
+                    case 'all':
+                        card.classList.remove('hidden-item');
+                        break;
+                    case 'personal':
+                        if (type === 'personal') {
+                            card.classList.remove('hidden-item');
+                        } else {
+                            card.classList.add('hidden-item');
+                        }
+                        break;
+                    case 'shared':
+                        if (type === 'shared') {
+                            card.classList.remove('hidden-item');
+                        } else {
+                            card.classList.add('hidden-item');
+                        }
+                        break;
+                    case 'collaboration':
+                        if (type === 'collaboration') {
+                            card.classList.remove('hidden-item');
+                        } else {
+                            card.classList.add('hidden-item');
+                        }
+                        break;
+                    default:
+                        card.classList.remove('hidden-item');
+                }
+            });
+        }
+
+        // Main initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedDesigns();
+            initCanvas();
+            updateBrushPreview();
+
+            // Navigation between tabs
+            const newDesignBtn = document.getElementById('newDesignBtn');
+            const createNewBoard = document.getElementById('createNewBoard');
+            const backToDashboardBtn = document.getElementById('backToDashboardBtn');
+            const dashboardTab = document.getElementById('dashboard-tab');
+            const designTab = document.getElementById('design-tab');
+            
+            // New design button
+            if (newDesignBtn) {
+                newDesignBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    clearCanvas();
+                    dashboardTab.classList.remove('active');
+                    designTab.classList.add('active');
+                });
+            }
+
+            // Create new board button
+            if (createNewBoard) {
+                createNewBoard.addEventListener('click', function() {
+                    clearCanvas();
+                    dashboardTab.classList.remove('active');
+                    designTab.classList.add('active');
+                });
+            }
+
+            // Back to dashboard
+            if (backToDashboardBtn) {
+                backToDashboardBtn.addEventListener('click', function() {
+                    designTab.classList.remove('active');
+                    dashboardTab.classList.add('active');
+                });
+            }
+
+            // Tool selection
+            const toolButtons = document.querySelectorAll('[data-tool]');
+            toolButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from tool buttons
+                    document.querySelectorAll('[data-tool]').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    currentTool = this.dataset.tool;
+                });
+            });
+
+            // Color selection
+            const colorButtons = document.querySelectorAll('[data-color]');
+            colorButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from color buttons
+                    document.querySelectorAll('[data-color]').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                    currentColor = this.dataset.color;
+                    updateBrushPreview();
+                });
+            });
+
+            // Template selection
+            const templateButtons = document.querySelectorAll('[data-template]');
+            templateButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const template = this.dataset.template;
+                    
+                    if (template === 'clear') {
+                        const templateCanvas = document.getElementById('templateOverlay');
+                        const ctx = templateCanvas.getContext('2d');
+                        ctx.clearRect(0, 0, templateCanvas.width, templateCanvas.height);
+                        currentTemplate = null;
+                    } else {
+                        drawTemplate(template);
+                    }
+                });
+            });
+
+            // Brush size
+            const brushSizeSlider = document.getElementById('brushSize');
+            if (brushSizeSlider) {
+                brushSizeSlider.addEventListener('input', function() {
+                    currentBrushSize = this.value;
+                    updateBrushPreview();
+                });
+            }
+
+            // Canvas tools
+            const undoBtn = document.getElementById('undoBtn');
+            const redoBtn = document.getElementById('redoBtn');
+            const clearCanvasBtn = document.getElementById('clearCanvasBtn');
+            const saveDesignBtn = document.getElementById('saveDesignBtn');
+
+            if (undoBtn) {
+                undoBtn.addEventListener('click', undo);
+            }
+
+            if (redoBtn) {
+                redoBtn.addEventListener('click', redo);
+            }
+
+            if (clearCanvasBtn) {
+                clearCanvasBtn.addEventListener('click', function() {
+                    if (confirm('¿Estás seguro de que quieres limpiar el canvas? Esta acción no se puede deshacer.')) {
+                        clearCanvas();
+                    }
+                });
+            }
+
+            if (saveDesignBtn) {
+                saveDesignBtn.addEventListener('click', function() {
+                    const modal = document.getElementById('saveDesignModal');
+                    if (modal) {
+                        modal.classList.remove('hidden');
+                    }
+                });
+            }
+
+            // Filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const buttonId = this.id;
+                    if (buttonId === 'allBtn') {
+                        filterDesigns('all');
+                    } else if (buttonId === 'myDesignsBtn') {
+                        filterDesigns('personal');
+                    } else if (buttonId === 'collaborationsBtn') {
+                        filterDesigns('collaboration');
+                    }
+                });
+            });
+
+            // Modal interactions
+            const newCollectionModal = document.getElementById('newCollectionModal');
+            const saveDesignModal = document.getElementById('saveDesignModal');
+            const newCollectionBtn = document.getElementById('newCollectionBtn');
+
+            // New collection modal
+            if (newCollectionBtn) {
+                newCollectionBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (newCollectionModal) {
+                        newCollectionModal.classList.remove('hidden');
+                    }
+                });
+            }
+
+            // Cancel new collection
+            const cancelCollectionBtn = document.getElementById('cancelCollectionBtn');
+            if (cancelCollectionBtn) {
+                cancelCollectionBtn.addEventListener('click', function() {
+                    newCollectionModal.classList.add('hidden');
+                    document.getElementById('collectionName').value = '';
+                    document.getElementById('collectionDesc').value = '';
+                });
+            }
+
+            // Create new collection
+            const createCollectionBtn = document.getElementById('createCollectionBtn');
+            if (createCollectionBtn) {
+                createCollectionBtn.addEventListener('click', function() {
+                    const name = document.getElementById('collectionName').value.trim();
+                    if (name) {
+                        alert(`Colección "${name}" creada exitosamente`);
+                        newCollectionModal.classList.add('hidden');
+                        document.getElementById('collectionName').value = '';
+                        document.getElementById('collectionDesc').value = '';
+                        
+                        // Clear canvas for new collection
+                        clearCanvas();
+                        const templateCanvas = document.getElementById('templateOverlay');
+                        const ctx = templateCanvas.getContext('2d');
+                        ctx.clearRect(0, 0, templateCanvas.width, templateCanvas.height);
+                        currentTemplate = null;
+                    } else {
+                        alert('Por favor ingresa un nombre para la colección');
+                    }
+                });
+            }
+
+            // Save design modal
+            const cancelSaveBtn = document.getElementById('cancelSaveBtn');
+            if (cancelSaveBtn) {
+                cancelSaveBtn.addEventListener('click', function() {
+                    saveDesignModal.classList.add('hidden');
+                });
+            }
+
+            const confirmSaveBtn = document.getElementById('confirmSaveBtn');
+            if (confirmSaveBtn) {
+                confirmSaveBtn.addEventListener('click', function() {
+                    const name = document.getElementById('designName').value.trim();
+                    const description = document.getElementById('designDescription').value.trim();
+                    const saveAsShared = document.getElementById('saveAsShared').checked;
+                    
+                    if (name) {
+                        const designData = saveCurrentDesign();
+                        if (designData) {
+                            const design = {
+                                id: Date.now().toString(),
+                                name: name,
+                                description: description,
+                                imageData: designData,
+                                template: currentTemplate,
+                                type: saveAsShared ? 'shared' : 'personal',
+                                date: new Date().toLocaleDateString()
+                            };
+                            
+                            if (saveAsShared) {
+                                savedDesigns.shared.push(design);
+                            } else {
+                                savedDesigns.personal.push(design);
+                            }
+                            
+                            saveDesigsToStorage();
+                            
+                            // Add to grid
+                            const designsGrid = document.getElementById('designs-grid');
+                            const newCard = createDesignCard(design);
+                            designsGrid.appendChild(newCard);
+                            
+                            alert(`Diseño "${name}" guardado exitosamente`);
+                            saveDesignModal.classList.add('hidden');
+                            
+                            // Clear form
+                            document.getElementById('designName').value = '';
+                            document.getElementById('designDescription').value = '';
+                            document.getElementById('saveAsPersonal').checked = true;
+                        } else {
+                            alert('Error al guardar el diseño');
+                        }
+                    } else {
+                        alert('Por favor ingresa un nombre para el diseño');
+                    }
+                });
+            }
+
+            // Close modals when clicking outside
+            [newCollectionModal, saveDesignModal].forEach(modal => {
+                if (modal) {
+                    modal.addEventListener('click', function(e) {
+                        if (e.target === modal) {
+                            modal.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+
+            // Sidebar functionality
+            const sidebarButtons = document.querySelectorAll('.sidebar a');
+            sidebarButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const buttonId = this.id;
+                    
+                    if (buttonId === 'myCollectionsBtn') {
+                        e.preventDefault();
+                        filterDesigns('personal');
+                        // Update active filter button
+                        document.getElementById('myDesignsBtn').click();
+                    } else if (buttonId === 'sharedBtn') {
+                        e.preventDefault();
+                        filterDesigns('shared');
+                        // Update active filter button
+                        const filterBtns = document.querySelectorAll('.filter-btn');
+                        filterBtns.forEach(btn => btn.classList.remove('active'));
+                        document.getElementById('collaborationsBtn').classList.add('active');
+                    } else if (buttonId === 'allCollectionsBtn') {
+                        e.preventDefault();
+                        filterDesigns('all');
+                        document.getElementById('allBtn').click();
+                    }
+                });
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    switch (e.key.toLowerCase()) {
+                        case 'z':
+                            e.preventDefault();
+                            if (e.shiftKey) {
+                                redo();
+                            } else {
+                                undo();
+                            }
+                            break;
+                        case 'y':
+                            e.preventDefault();
+                            redo();
+                            break;
+                        case 's':
+                            e.preventDefault();
+                            document.getElementById('saveDesignBtn').click();
+                            break;
+                    }
+                }
+                
+                // Tool shortcuts
+                switch (e.key.toLowerCase()) {
+                    case 'b':
+                        if (!e.ctrlKey && !e.metaKey) {
+                            document.querySelector('[data-tool="brush"]').click();
+                        }
+                        break;
+                    case 'e':
+                        if (!e.ctrlKey && !e.metaKey) {
+                            document.querySelector('[data-tool="eraser"]').click();
+                        }
+                        break;
+                }
+            });
+
+            // Load existing designs
+            function loadExistingDesigns() {
+                const designsGrid = document.getElementById('designs-grid');
+                
+                // Load personal designs
+                savedDesigns.personal.forEach(design => {
+                    const card = createDesignCard(design);
+                    designsGrid.appendChild(card);
+                });
+                
+                // Load shared designs
+                savedDesigns.shared.forEach(design => {
+                    const card = createDesignCard(design);
+                    designsGrid.appendChild(card);
+                });
+            }
+
+            // Load designs on startup
+            loadExistingDesigns();
+        });
+
+        // Edit design function (global scope for onclick)
+        function editDesign(designId) {
+            // Find the design in saved designs
+            let design = null;
+            
+            design = savedDesigns.personal.find(d => d.id === designId) || 
+                    savedDesigns.shared.find(d => d.id === designId);
+            
+            if (design) {
+                // Switch to design tab
+                document.getElementById('dashboard-tab').classList.remove('active');
+                document.getElementById('design-tab').classList.add('active');
+                
+                // Load the design onto canvas
+                const canvas = document.getElementById('designCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                const img = new Image();
+                img.onload = function() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                    saveCanvasState();
+                };
+                img.src = design.imageData;
+                
+                // Load template if available
+                if (design.template) {
+                    drawTemplate(design.template);
+                }
+            }
+        }
+
+        // Delete design function (global scope for onclick)
+        function deleteDesign(designId) {
+            // Find the design to get its name for confirmation
+            let designToDelete = null;
+            let designType = null;
+            let designIndex = -1;
+            
+            // Check in personal designs
+            designIndex = savedDesigns.personal.findIndex(d => d.id === designId);
+            if (designIndex !== -1) {
+                designToDelete = savedDesigns.personal[designIndex];
+                designType = 'personal';
+            } else {
+                // Check in shared designs
+                designIndex = savedDesigns.shared.findIndex(d => d.id === designId);
+                if (designIndex !== -1) {
+                    designToDelete = savedDesigns.shared[designIndex];
+                    designType = 'shared';
+                }
+            }
+            
+            if (designToDelete) {
+                // Show confirmation dialog
+                const confirmDelete = confirm(
+                    `¿Estás seguro de que quieres eliminar el diseño "${designToDelete.name}"?\n\nEsta acción no se puede deshacer.`
+                );
+                
+                if (confirmDelete) {
+                    // Remove from saved designs array
+                    if (designType === 'personal') {
+                        savedDesigns.personal.splice(designIndex, 1);
+                    } else if (designType === 'shared') {
+                        savedDesigns.shared.splice(designIndex, 1);
+                    }
+                    
+                    // Save to localStorage
+                    saveDesigsToStorage();
+                    
+                    // Remove from DOM
+                    const designCard = document.querySelector(`[data-id="${designId}"]`);
+                    if (designCard) {
+                        // Add fade out animation
+                        designCard.style.opacity = '0';
+                        designCard.style.transform = 'scale(0.9)';
+                        designCard.style.transition = 'all 0.3s ease';
+                        
+                        // Remove after animation
+                        setTimeout(() => {
+                            designCard.remove();
+                        }, 300);
+                    }
+                    
+                    // Show success message
+                    setTimeout(() => {
+                        alert(`Diseño "${designToDelete.name}" eliminado exitosamente`);
+                    }, 350);
+                }
+            } else {
+                alert('No se pudo encontrar el diseño para eliminar');
+            }
+        }
+    </script>
+</body>
+</html>

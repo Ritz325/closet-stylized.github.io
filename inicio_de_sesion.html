@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Closet Stylized - Registrarse</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0b2e 20%, #2d1b4e 40%, #1a1a2e 60%, #0f0f0f 100%);
+            min-height: 100vh;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efectos de fondo galáctico mejorados */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at top left, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at top right, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(88, 28, 135, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(79, 70, 229, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 30% 60%, rgba(147, 51, 234, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: -1;
+            animation: cosmic-drift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes cosmic-drift {
+            0% { transform: translateX(0) translateY(0) scale(1); }
+            100% { transform: translateX(10px) translateY(-10px) scale(1.02); }
+        }
+
+        .header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(147, 51, 234, 0.6);
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.4s ease;
+            padding: 12px 20px;
+            border-radius: 25px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(168, 85, 247, 0.1));
+            border-radius: 25px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav a:hover::before {
+            opacity: 1;
+        }
+
+        .nav a:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4);
+        }
+
+        .cart {
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            position: relative;
+            border: 1px solid rgba(192, 132, 252, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.5);
+        }
+
+        .registration-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: linear-gradient(145deg, rgba(10, 10, 10, 0.8), rgba(88, 28, 135, 0.15));
+            backdrop-filter: blur(25px);
+            border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            padding: 50px;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .registration-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.05), rgba(88, 28, 135, 0.05));
+            border-radius: 25px;
+            pointer-events: none;
+        }
+
+        .registration-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #9333ea, #c084fc, #a855f7, #9333ea);
+            background-size: 300% 100%;
+            animation: gradient-move 3s ease infinite;
+        }
+
+        @keyframes gradient-move {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .registration-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 50%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 40px rgba(147, 51, 234, 0.8);
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .registration-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            border-radius: 2px;
+        }
+
+        .form-row {
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-row label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #e0e7ff;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-row input, .form-row select {
+            width: 100%;
+            padding: 18px 25px;
+            border: 2px solid rgba(147, 51, 234, 0.4);
+            border-radius: 15px;
+            font-size: 1rem;
+            background: linear-gradient(145deg, rgba(10, 10, 10, 0.8), rgba(88, 28, 135, 0.1));
+            backdrop-filter: blur(10px);
+            color: #ffffff;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .form-row input:focus, .form-row select:focus {
+            outline: none;
+            border-color: #c084fc;
+            box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.3), 0 0 25px rgba(168, 85, 247, 0.4);
+            transform: translateY(-2px);
+            background: linear-gradient(145deg, rgba(10, 10, 10, 0.9), rgba(88, 28, 135, 0.2));
+        }
+
+        .form-row input:focus + label, .form-row select:focus + label {
+            color: #c084fc;
+            transform: translateY(-2px);
+        }
+
+        .form-row select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c084fc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 20px center;
+            background-size: 20px;
+        }
+
+        .parent-email-section {
+            display: none;
+            background: linear-gradient(145deg, rgba(88, 28, 135, 0.4), rgba(10, 10, 10, 0.8));
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border-left: 4px solid #c084fc;
+            position: relative;
+            animation: slide-down 0.4s ease;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
+
+        @keyframes slide-down {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .parent-email-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #c084fc;
+            font-size: 1.1rem;
+        }
+
+        .parent-email-info {
+            color: #c7d2fe;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(147, 51, 234, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(147, 51, 234, 0.6);
+        }
+
+        .submit-button:active {
+            transform: translateY(-1px);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 35px;
+            font-size: 1rem;
+            color: #c7d2fe;
+            position: relative;
+            z-index: 2;
+        }
+
+        .login-link a {
+            color: #c084fc;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            color: #e879f9;
+            text-decoration: underline;
+            text-shadow: 0 0 15px rgba(196, 132, 252, 0.6);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 40px 30px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            background: linear-gradient(145deg, rgba(10, 10, 10, 0.8), rgba(88, 28, 135, 0.1));
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(147, 51, 234, 0.2);
+        }
+
+        .footer-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .footer-links a:hover {
+            color: #c084fc;
+            background: rgba(147, 51, 234, 0.1);
+            text-shadow: 0 0 15px rgba(196, 132, 252, 0.6);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(147, 51, 234, 0.3);
+            border-top: 4px solid #c084fc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            display: none;
+            animation: slide-up 0.4s ease;
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes slide-up {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            display: none;
+            animation: shake 0.6s ease;
+            box-shadow: 0 15px 40px rgba(220, 38, 38, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes shake {
+            0%, 20%, 40%, 60%, 80%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+        }
+
+        /* Efectos galácticos */
+        .galaxy-element {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #9333ea 0%, rgba(147, 51, 234, 0.5) 50%, transparent 70%);
+            border-radius: 50%;
+            animation: galaxy-drift 12s ease-in-out infinite;
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.8);
+        }
+
+        .nebula-bg {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.2) 0%, rgba(88, 28, 135, 0.15) 40%, transparent 70%);
+            border-radius: 50%;
+            animation: nebula 25s linear infinite;
+            filter: blur(1px);
+        }
+
+        @keyframes galaxy-drift {
+            0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+            25% { transform: translateX(15px) translateY(-8px) scale(1.2); }
+            50% { transform: translateX(-8px) translateY(15px) scale(0.8); }
+            75% { transform: translateX(12px) translateY(8px) scale(1.1); }
+        }
+
+        @keyframes nebula {
+            0% { transform: rotate(0deg) scale(1); opacity: 0.3; }
+            50% { opacity: 0.6; }
+            100% { transform: rotate(360deg) scale(1); opacity: 0.3; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .registration-container {
+                margin: 30px 20px;
+                padding: 35px 25px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px;
+            }
+
+            .nav {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav a {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .registration-title {
+                font-size: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nebula-bg" style="top: 15%; left: 10%; animation-delay: 0s;"></div>
+    <div class="nebula-bg" style="top: 60%; right: 15%; animation-delay: 8s;"></div>
+    <div class="nebula-bg" style="top: 80%; left: 70%; animation-delay: 15s;"></div>
+    <div class="galaxy-element" style="top: 25%; left: 75%; animation-delay: 2s;"></div>
+    <div class="galaxy-element" style="top: 70%; left: 15%; animation-delay: 5s;"></div>
+    <div class="galaxy-element" style="top: 45%; right: 8%; animation-delay: 9s;"></div>
+    <div class="galaxy-element" style="top: 10%; left: 40%; animation-delay: 12s;"></div>
+
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">Closet Stylized</div>
+            <nav class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="diseño.html">Diseñar</a>
+                <a href="galeria.html">Galería</a>
+                <a href="inicio_de_sesion.html">Iniciar Sesión</a>
+                <a href="bordados.html">Diseño Bordado</a>
+                <a href="moodboard.html">Colaboraciones</a>
+                <a href="restricciones.html">Consejos de diseño</a>
+                <a href="carrito.html">Carrito</a>
+                
+            </nav>
+        </div>
+    </div>
+    
+    
+    <div class="registration-container">
+        <div class="registration-title">Crear Cuenta</div>
+        
+        <form id="registration-form">
+            <div class="form-row">
+                <label for="nombre-completo">Nombre Completo</label>
+                <input type="text" id="nombre-completo" name="nombre-completo" required placeholder="Ingresa tu nombre completo">
+            </div>
+            
+            <div class="form-row">
+                <label for="fecha-nacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+            </div>
+            
+            <div class="parent-email-section" id="parent-email-section">
+                <div class="parent-email-title">🔒 Permiso Parental Requerido</div>
+                <div class="parent-email-info">Como eres menor de edad, necesitamos el correo electrónico de un padre o tutor para enviar una solicitud de permiso.</div>
+                <input type="email" id="parent-email" name="parent-email" placeholder="correo@padres.com">
+            </div>
+            
+            <div class="form-row">
+                <label for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" name="correo" required placeholder="tu@email.com">
+            </div>
+            
+            <div class="form-row">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion" placeholder="Tu dirección completa">
+            </div>
+            
+            <div class="form-row">
+                <label for="numero">Número de Teléfono</label>
+                <input type="tel" id="numero" name="numero" placeholder="+57 300 123 4567">
+            </div>
+            
+            <div class="form-row">
+                <label for="tipo-usuario">Tipo de Usuario</label>
+                <select id="tipo-usuario" name="tipo-usuario" required>
+                    <option value="">✨ Selecciona tu rol</option>
+                    <option value="diseñador">🎨 Diseñador</option>
+                    <option value="cliente">🛍️ Cliente</option>
+                    <option value="vendedor">💼 Vendedor</option>
+                    <option value="espectador">👀 Espectador</option>
+                </select>
+            </div>
+            
+            <div class="form-row">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" required placeholder="Mínimo 8 caracteres">
+            </div>
+            
+            <div class="form-row">
+                <label for="confirm-password">Confirmar Contraseña</label>
+                <input type="password" id="confirm-password" name="confirm-password" required placeholder="Repite tu contraseña">
+            </div>
+            
+            <div class="success-message" id="success-message">
+                ✅ ¡Cuenta creada exitosamente! Bienvenido a Closet Stylized
+            </div>
+            
+            <div class="error-message" id="error-message">
+                ❌ <span id="error-text">Error en el formulario</span>
+            </div>
+            
+            <button type="submit" class="submit-button">🚀 Crear Mi Cuenta</button>
+        </form>
+        
+        <div class="login-link">
+            <p>¿Ya tienes cuenta? <a href="inicio_de_sesion.html">Iniciar Sesión</a></p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div>© 2024 Closet Stylized - Explora tu estilo único</div>
+        <div class="footer-links">
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Soporte</a>
+        </div>
+    </div>
+    
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <script>
+        // Elementos del DOM
+        const form = document.getElementById('registration-form');
+        const fechaNacimiento = document.getElementById('fecha-nacimiento');
+        const parentEmailSection = document.getElementById('parent-email-section');
+        const parentEmail = document.getElementById('parent-email');
+        const tipoUsuario = document.getElementById('tipo-usuario');
+        const direccionField = document.getElementById('direccion');
+        const numeroField = document.getElementById('numero');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+
+        // Función para mostrar notificaciones
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, ${type === 'success' ? '#10b981, #34d399' : type === 'error' ? '#dc2626, #ef4444' : '#9333ea, #c084fc'});
+                color: white;
+                padding: 15px 25px;
+                border-radius: 15px;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Añadir estilos de animación para las notificaciones
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Verificar edad cuando cambia la fecha de nacimiento
+        fechaNacimiento.addEventListener('change', function() {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            
+            if (age < 18) {
+                parentEmailSection.style.display = 'block';
+                parentEmail.required = true;
+                showNotification('📧 Se requiere autorización parental', 'info');
+            } else {
+                parentEmailSection.style.display = 'none';
+                parentEmail.required = false;
+            }
+        });
+        
+        // Función para mostrar mensajes
+        function showMessage(type, message) {
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            if (type === 'success') {
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            } else if (type === 'error') {
+                errorText.textContent = message;
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // Validación de contraseña en tiempo real
+        const passwordField = document.getElementById('password');
+        const confirmPasswordField = document.getElementById('confirm-password');
+        
+        confirmPasswordField.addEventListener('input', function() {
+            if (this.value && passwordField.value !== this.value) {
+                this.style.borderColor = '#ef4444';
+                this.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.3)';
+            } else if (this.value && passwordField.value === this.value) {
+                this.style.borderColor = '#10b981';
+                this.style.boxShadow = '0 0 0 4px rgba(16, 185, 129, 0.3)';
+            } else {
+                this.style.borderColor = 'rgba(147, 51, 234, 0.4)';
+                this.style.boxShadow = 'none';
+            }
+        });
+
+        // Validar fortaleza de contraseña
+        passwordField.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            if (strength < 2) {
+                this.style.borderColor = '#ef4444';
+            } else if (strength < 3) {
+                this.style.borderColor = '#f59e0b';
+            } else {
+                this.style.borderColor = '#10b981';
+            }
+        });
+        
+        // Validación del formulario
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = passwordField.value;
+            const confirmPassword = confirmPasswordField.value;
+            const email = document.getElementById('correo').value;
+            const name = document.getElementById('nombre-completo').value;
+            
+            // Validaciones
+            if (password.length < 8) {
+                showMessage('error', 'La contraseña debe tener al menos 8 caracteres');
+                showNotification('Contraseña muy corta', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('error', 'Las contraseñas no coinciden');
+                showNotification('Las contraseñas no coinciden', 'error');
+                return;
+            }
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                showMessage('error', 'Por favor ingresa un email válido');
+                showNotification('Email inválido', 'error');
+                return;
+            }
+            
+            if (name.trim().length < 2) {
+                showMessage('error', 'Por favor ingresa tu nombre completo');
+                showNotification('Nombre requerido', 'error');
+                return;
+            }
+            
+            // Mostrar loading
+            loadingOverlay.style.display = 'flex';
+            
+            // Simular envío del formulario
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                showMessage('success', '¡Cuenta creada exitosamente! Bienvenido a Closet Stylized');
+                showNotification('¡Cuenta creada con éxito!', 'success');
+                form.reset();
+                
+                // Resetear estilos de los campos
+                const inputs = document.querySelectorAll('input');
+                inputs.forEach(input => {
+                    input.style.borderColor = 'rgba(147, 51, 234, 0.4)';
+                    input.style.boxShadow = 'none';
+                });
+                
+                // Opcional: redirigir después del éxito
+                setTimeout(() => {
+                    // window.location.href = 'inicio_de_sesion.html';
+                }, 2000);
+            }, 2000);
+        });
+        
+        // Efectos de hover en los campos
+        const inputs = document.querySelectorAll('input, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('label').style.transform = 'translateY(-2px)';
+                this.parentElement.querySelector('label').style.color = '#c084fc';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.querySelector('label').style.transform = 'translateY(0)';
+                if (!this.value) {
+                    this.parentElement.querySelector('label').style.color = '#e0e7ff';
+                }
+            });
+        });
+        
+        // Animación del carrito
+        const cartIcon = document.querySelector('.cart');
+        cartIcon.addEventListener('click', function() {
+            this.style.transform = 'scale(1.1) translateY(-2px)';
+            setTimeout(() => {
+                this.style.transform = 'translateY(-2px)';
+            }, 200);
+        });
+
+        // Efectos parallax suaves
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const nebulas = document.querySelectorAll('.nebula-bg');
+            const galaxies = document.querySelectorAll('.galaxy-element');
+            
+            nebulas.forEach((nebula, index) => {
+                const speed = 0.5 + (index * 0.2);
+                nebula.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+            });
+            
+            galaxies.forEach((galaxy, index) => {
+                const speed = 0.3 + (index * 0.1);
+                galaxy.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animación de entrada para el contenedor de registro
+            const container = document.querySelector('.registration-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'all 0.8s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 300);
+
+            // Efecto de escritura en el título
+            const title = document.querySelector('.registration-title');
+            const originalText = title.textContent;
+            title.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < originalText.length) {
+                    title.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            };
+            
+            setTimeout(typeWriter, 800);
+        });
+    </script>
+</body>
+</html>
+        
+        // Mostrar/ocultar campos según el tipo de usuario
+        tipoUsuario.addEventListener('change', function() {
+            const userType = this.value;
+            
+            // Mostrar todos los campos por defecto
+            direccionField.parentElement.style.display = 'block';
+            numeroField.parentElement.style.display = 'block';
+            fechaNacimiento.parentElement.style.display = 'block';
+            
+            if (userType === 'espectador') {
+                // Para espectador: solo nombre y correo
+                direccionField.parentElement.style.display = 'none';
+                numeroField.parentElement.style.display = 'none';
+                fechaNacimiento.parentElement.style.display = 'none';
+                parentEmailSection.style.display = 'none';
+                
+                direccionField.required = false;
+                numeroField.required = false;
+                fechaNacimiento.required = false;
+                parentEmail.required = false;
+                
+                showNotification('👀 Modo espectador activado', 'info');
+            } else {
+                // Para otros tipos: todos los campos
+                direccionField.required = true;
+                numeroField.required = true;
+                fechaNacimiento.required = true;
+                
+                // Volver a verificar la edad
+                const birthDateEvent = new Event('change');
+                fechaNacimiento.dispatchEvent(birthDateEvent);
+            }
+        });

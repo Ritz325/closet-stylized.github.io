@@ -1,0 +1,11 @@
+Model Information:
+* title:	CAMISETA
+* source:	https://sketchfab.com/3d-models/camiseta-43e18ff7b1f34453b5045bb7062c9904
+* author:	nikolaysena2001 (https://sketchfab.com/nikolaysena2001)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "CAMISETA" (https://sketchfab.com/3d-models/camiseta-43e18ff7b1f34453b5045bb7062c9904) by nikolaysena2001 (https://sketchfab.com/nikolaysena2001) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

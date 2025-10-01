@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diseñador de Bordados</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0b2e 20%, #2d1b4e 40%, #1a1a2e 60%, #0f0f0f 100%);
+            min-height: 100vh;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efectos de fondo galáctico */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 70%;
+            height: 50%;
+            background: 
+                radial-gradient(ellipse at top left, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at top right, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(88, 28, 135, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(79, 70, 229, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+            animation: cosmic-drift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes cosmic-drift {
+            0% { transform: translateX(0) translateY(0) scale(1); }
+            100% { transform: translateX(10px) translateY(-10px) scale(1.02); }
+        }
+
+        .header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(147, 51, 234, 0.6);
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.4s ease;
+            padding: 12px 20px;
+            border-radius: 25px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.1), rgba(168, 85, 247, 0.1));
+            border-radius: 25px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav a:hover::before {
+            opacity: 1;
+        }
+
+        .nav a:hover {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background: linear-gradient(145deg, rgba(10, 10, 10, 0.8), rgba(88, 28, 135, 0.15));
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(147, 51, 234, 0.5);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(147, 51, 234, 0.4);
+        }
+        
+        h1, h2, h3 {
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .text-gray-700 {
+            color: #e0e0e0 !important;
+        }
+        
+        .text-gray-600 {
+            color: #b0b0b0 !important;
+        }
+        
+        .text-gray-800 {
+            color: #ffffff !important;
+        }
+        
+        .text-gray-500 {
+            color: #a0a0a0 !important;
+        }
+        
+        #canvas {
+            border: 2px dashed rgba(147, 51, 234, 0.5);
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(45, 27, 105, 0.2));
+            cursor: crosshair;
+            border-radius: 15px;
+        }
+        
+        .color-option {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.5);
+        }
+        
+        .font-option {
+            font-family: inherit;
+            padding: 0.5rem;
+            margin: 0.25rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(45, 27, 105, 0.3);
+            color: white;
+            border: 1px solid rgba(147, 51, 234, 0.4);
+        }
+        
+        .font-option:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+            background: rgba(147, 51, 234, 0.2);
+        }
+        
+        .size-option {
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(45, 27, 105, 0.4);
+            color: white;
+            border: 1px solid rgba(147, 51, 234, 0.3);
+        }
+        
+        .size-option:hover {
+            background: rgba(147, 51, 234, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3);
+        }
+        
+        .size-option.selected {
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            color: white;
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(147, 51, 234, 0.5);
+        }
+        
+        .btn-secondary {
+            background: rgba(45, 27, 105, 0.6);
+            color: white;
+            border: 1px solid rgba(147, 51, 234, 0.4);
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(147, 51, 234, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3);
+        }
+        
+        input[type="color"] {
+            border-radius: 0.5rem;
+            border: 2px solid rgba(147, 51, 234, 0.4);
+            background: rgba(20, 20, 20, 0.8);
+        }
+        
+        input[type="text"] {
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(147, 51, 234, 0.4);
+            border-radius: 0.5rem;
+            color: white;
+            padding: 0.75rem;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #c084fc;
+            box-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
+        }
+        
+        input[type="file"] {
+            color: white;
+        }
+        
+        input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, #9333ea, #c084fc);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            margin-right: 1rem;
+            cursor: pointer;
+        }
+        
+        .price-card {
+            background: linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .price-total {
+            color: #c084fc;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
+        }
+        
+        #previewCanvas {
+            border: 2px solid rgba(147, 51, 234, 0.4);
+            border-radius: 10px;
+            background: rgba(20, 20, 20, 0.5);
+        }
+        
+        .preview-container {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8), rgba(45, 27, 105, 0.3));
+            border: 2px dashed rgba(147, 51, 234, 0.4);
+            border-radius: 1rem;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.98), rgba(45, 27, 105, 0.5));
+            border: 2px solid rgba(147, 51, 234, 0.4);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 50px rgba(147, 51, 234, 0.5);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #c084fc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .close-modal:hover {
+            color: #a855f7;
+            transform: scale(1.2);
+            text-shadow: 0 0 10px rgba(147, 51, 234, 0.8);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: #e0e0e0;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid rgba(147, 51, 234, 0.4);
+            border-radius: 0.5rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #c084fc;
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+        }
+
+        .form-select {
+            cursor: pointer;
+        }
+
+        .form-select option {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px;
+            }
+
+            .nav {
+                gap: 20px;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-white">
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">Closet Stylized</div>
+            <div class="nav">
+                <a href="index.html">Inicio</a>
+                <a href="diseño.html">Diseñar</a>
+                <a href="galeria.html">Galería</a>
+                <a href="inicio_de_sesion.html">Iniciar Sesión</a>
+                <a href="bordados.html">Diseño Bordado</a>
+                <a href="moodboard.html">Colaboraciones</a>
+                <a href="restricciones.html">Consejos de Diseño</a>
+                <a href="carrito.html">Carrito</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center mb-8">Diseñador de Bordados</h1>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Panel de herramientas -->
+            <div class="card p-6">
+                <h2 class="text-2xl font-semibold mb-6">Herramientas</h2>
+                
+                <!-- Selección de color -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Color del hilo</label>
+                    <div class="flex flex-wrap gap-2">
+                        <div class="color-option w-8 h-8 rounded-full cursor-pointer bg-red-500" data-color="#EF4444"></div>
+                        <div class="color-option w-8 h-8 rounded-full cursor-pointer" style="background: #9333ea;" data-color="#9333ea"></div>
+                        <div class="color-option w-8 h-8 rounded-full cursor-pointer" style="background: #c084fc;" data-color="#c084fc"></div>
+                        <div class="color-option w-8 h-8 rounded-full cursor-pointer" style="background: #a855f7;" data-color="#a855f7"></div>
+                        <div class="color-option w-8 h-8 rounded-full cursor-pointer bg-green-500" data-color="#10B981"></div>
+                        <div class="color-option w-8 h-8 rounded-full cursor-pointer bg-yellow-500" data-color="#F59E0B"></div>
+                        <div class="color-option w-8 h-8 rounded-full cursor-pointer bg-black" data-color="#000000"></div>
+                        <div class="color-option w-8 h-8 rounded-full cursor-pointer bg-white border border-gray-300" data-color="#FFFFFF"></div>
+                    </div>
+                    <input type="color" id="customColor" class="mt-3 w-full h-10 cursor-pointer">
+                </div>
+                
+                <!-- Selección de tipo de letra -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Tipografía</label>
+                    <div class="flex flex-col gap-2">
+                        <button class="font-option text-lg" style="font-family: 'Arial', sans-serif;" data-font="Arial, sans-serif">Arial</button>
+                        <button class="font-option text-lg" style="font-family: 'Times New Roman', serif;" data-font="'Times New Roman', serif">Times New Roman</button>
+                        <button class="font-option text-lg" style="font-family: 'Courier New', monospace;" data-font="'Courier New', monospace">Courier New</button>
+                        <button class="font-option text-xl" style="font-family: 'Brush Script MT', cursive;" data-font="'Brush Script MT', cursive">Brush Script</button>
+                        <button class="font-option text-lg" style="font-family: 'Georgia', serif;" data-font="'Georgia', serif">Georgia</button>
+                        <button class="font-option text-lg" style="font-family: 'Verdana', sans-serif;" data-font="'Verdana', sans-serif">Verdana</button>
+                    </div>
+                </div>
+                
+                <!-- Tamaño del bordado -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Tamaño (cm)</label>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="size-option" data-size="10">10x10 cm</button>
+                        <button class="size-option" data-size="15">15x15 cm</button>
+                        <button class="size-option selected" data-size="20">20x20 cm</button>
+                        <button class="size-option" data-size="25">25x25 cm</button>
+                        <button class="size-option" data-size="30">30x30 cm</button>
+                    </div>
+                </div>
+                
+                <!-- Texto personalizado -->
+                <div class="mb-6">
+                    <label for="customText" class="block text-sm font-medium text-gray-300 mb-3">Texto personalizado</label>
+                    <input type="text" id="customText" class="w-full" placeholder="Escribe tu texto aquí">
+                    <button id="addTextBtn" class="mt-3 btn-primary w-full">Añadir texto</button>
+                </div>
+                
+                <!-- Cargar imagen -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Cargar diseño</label>
+                    <input type="file" id="uploadImage" accept="image/*" class="block w-full text-sm">
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="flex justify-between gap-2">
+                    <button id="clearCanvas" class="btn-secondary flex-1">Limpiar</button>
+                    <button id="undoBtn" class="btn-secondary flex-1">Deshacer</button>
+                    <button id="saveBtn" class="btn-primary flex-1">Guardar</button>
+                </div>
+            </div>
+            
+            <!-- Área de diseño -->
+            <div class="card p-6 col-span-2">
+                <h2 class="text-2xl font-semibold mb-6">Área de diseño</h2>
+                <div class="flex justify-center mb-4">
+                    <canvas id="canvas" width="500" height="600"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vista previa y precio -->
+        <div class="mt-8 card p-6">
+            <h2 class="text-2xl font-semibold mb-6">Vista previa y precio</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="preview-container p-4 flex items-center justify-center">
+                    <canvas id="previewCanvas" width="300" height="300"></canvas>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <h3 class="text-xl font-medium text-gray-300 mb-4">Detalles del bordado</h3>
+                    <div class="mb-6 space-y-2">
+                        <p class="text-gray-400">Tamaño: <span id="selectedSizeDisplay" class="font-medium text-white">20x20</span> cm</p>
+                        <p class="text-gray-400">Complejidad: <span id="complexity" class="font-medium text-white">Media</span></p>
+                        <p class="text-gray-400">Tiempo estimado: <span id="timeEstimate" class="font-medium text-white">3-4 días</span></p>
+                    </div>
+                    <div class="price-card">
+                        <p class="text-gray-300 mb-2">Precio total:</p>
+                        <p class="price-total">$<span id="totalPrice">45,000</span> COP</p>
+                        <p class="text-sm text-gray-400 mt-1">IVA incluido</p>
+                    </div>
+                    <button id="confirmOrderBtn" class="mt-6 btn-primary text-lg py-4">Confirmar pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación de pedido -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h2 class="text-3xl font-bold mb-6">Completar Pedido</h2>
+            
+            <form id="orderForm">
+                <div class="form-group">
+                    <label class="form-label" for="fullName">Nombre completo *</label>
+                    <input type="text" id="fullName" class="form-input" placeholder="Juan Pérez García" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phone">Número de teléfono *</label>
+                    <input type="tel" id="phone" class="form-input" placeholder="+57 300 123 4567" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Correo electrónico *</label>
+                    <input type="email" id="email" class="form-input" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="address">Dirección de entrega *</label>
+                    <input type="text" id="address" class="form-input" placeholder="Calle 123 #45-67, Bogotá" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="paymentMethod">Método de pago *</label>
+                    <select id="paymentMethod" class="form-select" required>
+                        <option value="">Selecciona un método</option>
+                        <option value="efectivo">Efectivo contra entrega</option>
+                        <option value="transferencia">Transferencia bancaria</option>
+                        <option value="tarjeta">Tarjeta de crédito/débito</option>
+                        <option value="nequi">Nequi</option>
+                        <option value="daviplata">Daviplata</option>
+                        <option value="pse">PSE</option>
+                    </select>
+                </div>
+
+                <div class="price-card mb-6">
+                    <p class="text-gray-300 mb-1">Resumen del pedido:</p>
+                    <p class="text-white mb-1">Tamaño: <span id="modalSize">20x20</span> cm</p>
+                    <p class="text-white mb-1">Complejidad: <span id="modalComplexity">Media</span></p>
+                    <p class="text-white mb-3">Tiempo estimado: <span id="modalTime">3-4 días</span></p>
+                    <p class="price-total">$<span id="modalPrice">45,000</span> COP</p>
+                </div>
+
+                <div class="flex gap-3">
+                    <button type="button" id="cancelOrder" class="btn-secondary flex-1">Cancelar</button>
+                    <button type="submit" class="btn-primary flex-1">Realizar pedido</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const previewCanvas = document.getElementById('previewCanvas');
+            const previewCtx = previewCanvas.getContext('2d');
+            const colorOptions = document.querySelectorAll('.color-option');
+            const customColor = document.getElementById('customColor');
+            const fontOptions = document.querySelectorAll('.font-option');
+            const sizeOptions = document.querySelectorAll('.size-option');
+            const customText = document.getElementById('customText');
+            const addTextBtn = document.getElementById('addTextBtn');
+            const clearCanvas = document.getElementById('clearCanvas');
+            const undoBtn = document.getElementById('undoBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const uploadImage = document.getElementById('uploadImage');
+            const selectedSizeDisplay = document.getElementById('selectedSizeDisplay');
+            const totalPrice = document.getElementById('totalPrice');
+            const confirmOrderBtn = document.getElementById('confirmOrderBtn');
+            const orderModal = document.getElementById('orderModal');
+            const closeModal = document.getElementById('closeModal');
+            const cancelOrder = document.getElementById('cancelOrder');
+            const orderForm = document.getElementById('orderForm');
+            
+            let currentColor = '#9333ea';
+            let currentFont = 'Arial, sans-serif';
+            let currentSize = 20;
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            let drawingHistory = [];
+            let historyIndex = -1;
+            
+            // Inicializar el lienzo
+            function initCanvas() {
+                ctx.fillStyle = 'rgba(20, 20, 20, 0.1)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                saveCanvasState();
+            }
+            
+            // Guardar estado del lienzo
+            function saveCanvasState() {
+                historyIndex++;
+                if (historyIndex < drawingHistory.length) {
+                    drawingHistory.length = historyIndex;
+                }
+                drawingHistory.push(canvas.toDataURL());
+            }
+            
+            // Dibujar
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            function startDrawing(e) {
+                isDrawing = true;
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+            
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.strokeStyle = currentColor;
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                ctx.shadowColor = currentColor;
+                ctx.shadowBlur = 5;
+                ctx.stroke();
+                
+                [lastX, lastY] = [e.offsetX, e.offsetY];
+            }
+            
+            function stopDrawing() {
+                if (isDrawing) {
+                    saveCanvasState();
+                    updatePreview();
+                    calculatePrice();
+                }
+                isDrawing = false;
+            }
+            
+            // Selección de color
+            colorOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    colorOptions.forEach(opt => opt.classList.remove('ring-2', 'ring-pink-500'));
+                    this.classList.add('ring-2', 'ring-pink-500');
+                    currentColor = this.getAttribute('data-color');
+                    customColor.value = currentColor;
+                });
+            });
+            
+            customColor.addEventListener('input', function() {
+                currentColor = this.value;
+            });
+            
+            // Selección de fuente
+            fontOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    fontOptions.forEach(opt => opt.classList.remove('ring-2', 'ring-pink-500'));
+                    this.classList.add('ring-2', 'ring-pink-500');
+                    currentFont = this.getAttribute('data-font');
+                });
+            });
+            
+            // Selección de tamaño
+            sizeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    sizeOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    currentSize = parseInt(this.getAttribute('data-size'));
+                    selectedSizeDisplay.textContent = `${currentSize}x${currentSize}`;
+                    calculatePrice();
+                    updatePreview();
+                });
+            });
+            
+            // Añadir texto
+            addTextBtn.addEventListener('click', function() {
+                if (customText.value.trim() !== '') {
+                    ctx.font = `28px ${currentFont}`;
+                    ctx.fillStyle = currentColor;
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'top';
+                    ctx.shadowColor = currentColor;
+                    ctx.shadowBlur = 3;
+                    ctx.fillText(customText.value, 20, 20);
+                    saveCanvasState();
+                    updatePreview();
+                    calculatePrice();
+                }
+            });
+            
+            // Cargar imagen
+            uploadImage.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = new Image();
+                        img.onload = function() {
+                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                            saveCanvasState();
+                            updatePreview();
+                            calculatePrice();
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Limpiar lienzo
+            clearCanvas.addEventListener('click', function() {
+                if (confirm('¿Estás seguro de que quieres limpiar el diseño?')) {
+                    initCanvas();
+                    updatePreview();
+                    calculatePrice();
+                }
+            });
+            
+            // Deshacer
+            undoBtn.addEventListener('click', function() {
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    const img = new Image();
+                    img.onload = function() {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 0, 0);
+                        updatePreview();
+                        calculatePrice();
+                    };
+                    img.src = drawingHistory[historyIndex];
+                }
+            });
+            
+            // Guardar diseño
+            saveBtn.addEventListener('click', function() {
+                const link = document.createElement('a');
+                link.download = 'bordado-diseno.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+            
+            // Actualizar vista previa
+            function updatePreview() {
+                previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+                
+                const scale = Math.min(
+                    previewCanvas.width / canvas.width,
+                    previewCanvas.height / canvas.height
+                );
+                
+                const scaledWidth = canvas.width * scale;
+                const scaledHeight = canvas.height * scale;
+                const offsetX = (previewCanvas.width - scaledWidth) / 2;
+                const offsetY = (previewCanvas.height - scaledHeight) / 2;
+                
+                const img = new Image();
+                img.onload = function() {
+                    previewCtx.drawImage(img, offsetX, offsetY, scaledWidth, scaledHeight);
+                    
+                    previewCtx.strokeStyle = 'rgba(147, 51, 234, 0.8)';
+                    previewCtx.setLineDash([5, 5]);
+                    previewCtx.lineWidth = 2;
+                    previewCtx.strokeRect(
+                        offsetX + (previewCanvas.width - currentSize * 8) / 2,
+                        offsetY + (previewCanvas.height - currentSize * 8) / 2,
+                        currentSize * 8,
+                        currentSize * 8
+                    );
+                    previewCtx.setLineDash([]);
+                };
+                img.src = canvas.toDataURL();
+            }
+            
+            // Calcular precio
+            function calculatePrice() {
+                const basePrice = 10000;
+                const sizeFactor = currentSize / 10;
+                let complexityFactor = 1.0;
+                
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                let nonWhitePixels = 0;
+                
+                for (let i = 0; i < imageData.length; i += 4) {
+                    if (imageData[i] < 250 || imageData[i+1] < 250 || imageData[i+2] < 250) {
+                        nonWhitePixels++;
+                    }
+                }
+                
+                const coverage = nonWhitePixels / (canvas.width * canvas.height);
+                
+                if (coverage < 0.1) {
+                    complexityFactor = 0.8;
+                    document.getElementById('complexity').textContent = 'Baja';
+                    document.getElementById('timeEstimate').textContent = '2-3 días';
+                } else if (coverage < 0.3) {
+                    complexityFactor = 1.0;
+                    document.getElementById('complexity').textContent = 'Media';
+                    document.getElementById('timeEstimate').textContent = '3-4 días';
+                } else {
+                    complexityFactor = 1.3;
+                    document.getElementById('complexity').textContent = 'Alta';
+                    document.getElementById('timeEstimate').textContent = '4-5 días';
+                }
+                
+                const finalPrice = Math.round(basePrice * sizeFactor * complexityFactor);
+                totalPrice.textContent = finalPrice.toLocaleString('es-CO');
+            }
+            
+            // Inicialización
+            initCanvas();
+            updatePreview();
+            calculatePrice();
+            
+            // Seleccionar primer color por defecto
+            colorOptions[1].click();
+
+            // Modal de pedido
+            confirmOrderBtn.addEventListener('click', function() {
+                document.getElementById('modalSize').textContent = selectedSizeDisplay.textContent;
+                document.getElementById('modalComplexity').textContent = document.getElementById('complexity').textContent;
+                document.getElementById('modalTime').textContent = document.getElementById('timeEstimate').textContent;
+                document.getElementById('modalPrice').textContent = totalPrice.textContent;
+                
+                orderModal.classList.add('show');
+            });
+
+            closeModal.addEventListener('click', function() {
+                orderModal.classList.remove('show');
+            });
+
+            cancelOrder.addEventListener('click', function() {
+                orderModal.classList.remove('show');
+            });
+
+            window.addEventListener('click', function(e) {
+                if (e.target === orderModal) {
+                    orderModal.classList.remove('show');
+                }
+            });
+
+            orderForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const orderData = {
+                    fullName: document.getElementById('fullName').value,
+                    phone: document.getElementById('phone').value,
+                    email: document.getElementById('email').value,
+                    address: document.getElementById('address').value,
+                    paymentMethod: document.getElementById('paymentMethod').value,
+                    size: selectedSizeDisplay.textContent,
+                    complexity: document.getElementById('complexity').textContent,
+                    time: document.getElementById('timeEstimate').textContent,
+                    price: totalPrice.textContent
+                };
+
+                console.log('Pedido realizado:', orderData);
+                
+                alert(`¡Pedido confirmado!\n\nGracias ${orderData.fullName}, tu pedido ha sido registrado exitosamente.\n\nRecibirás un correo de confirmación en ${orderData.email}\n\nTotal: ${orderData.price} COP\nTiempo estimado: ${orderData.time}`);
+                
+                orderModal.classList.remove('show');
+                orderForm.reset();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texturas de Tela - Closet Stylized</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0014 0%, #1a0033 50%, #2d1b4e 100%);
+            color: white; min-height: 100vh;
+        }
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.9); z-index: 1000; align-items: center;
+            justify-content: center; padding: 20px; backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { display: flex; }
+        .design-modal {
+            background: linear-gradient(135deg, #1a0033 0%, #2d1b4e 100%);
+            border-radius: 20px; border: 2px solid #9333ea; width: 90%;
+            max-width: 1400px; max-height: 90vh; display: flex; flex-direction: column;
+            box-shadow: 0 0 50px rgba(147, 51, 234, 0.6);
+        }
+        .modal-header {
+            padding: 20px 30px; border-bottom: 1px solid rgba(147, 51, 234, 0.3);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-title {
+            font-size: 24px; font-weight: 600; color: #a855f7;
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+        .modal-actions { display: flex; gap: 10px; }
+        .btn {
+            padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;
+            font-weight: 500; transition: all 0.3s ease; font-size: 14px;
+        }
+        .btn-primary { background: #a855f7; color: white; box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+        .btn-primary:hover { background: #9333ea; box-shadow: 0 0 25px rgba(147, 51, 234, 0.6); }
+        .btn-secondary { background: rgba(168, 85, 247, 0.2); color: white; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .btn-secondary:hover { background: rgba(168, 85, 247, 0.3); border-color: #a855f7; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .modal-body { display: flex; flex: 1; overflow: hidden; }
+        .tools-panel {
+            width: 280px; background: rgba(20, 0, 40, 0.6); padding: 20px;
+            overflow-y: auto; border-right: 1px solid rgba(147, 51, 234, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .tool-section { margin-bottom: 25px; }
+        .tool-section h3 {
+            color: #a855f7; font-size: 14px; margin-bottom: 12px;
+            text-transform: uppercase; letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+        }
+        .tool-btn {
+            width: 100%; padding: 10px; margin: 5px 0;
+            background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 8px; color: white; cursor: pointer; transition: all 0.3s ease;
+            font-size: 13px; display: flex; align-items: center; gap: 8px;
+        }
+        .tool-btn:hover {
+            background: rgba(168, 85, 247, 0.2); border-color: #a855f7;
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.3);
+        }
+        .tool-btn.active {
+            background: #a855f7; border-color: #a855f7;
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+        }
+        .color-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+        .color-option {
+            width: 100%; aspect-ratio: 1; border-radius: 8px; cursor: pointer;
+            border: 2px solid transparent; transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .color-option:hover {
+            transform: scale(1.1); border-color: #a855f7;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+        .color-option.selected { border-color: #a855f7; box-shadow: 0 0 20px rgba(168, 85, 247, 0.8); }
+        .canvas-container {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 40px; position: relative;
+        }
+        #textureCanvas {
+            border: 2px solid #9333ea; border-radius: 12px; background: white;
+            box-shadow: 0 0 40px rgba(147, 51, 234, 0.5); cursor: crosshair;
+        }
+        .slider-control { margin: 15px 0; }
+        .slider-control label {
+            display: block; font-size: 12px; color: rgba(255, 255, 255, 0.9); margin-bottom: 8px;
+        }
+        .slider-control input[type="range"] {
+            width: 100%; height: 6px; border-radius: 3px; background: rgba(168, 85, 247, 0.3);
+            outline: none; -webkit-appearance: none;
+        }
+        .slider-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+            background: #a855f7; cursor: pointer; box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+        }
+        .slider-control input[type="range"]::-moz-range-thumb {
+            width: 16px; height: 16px; border-radius: 50%; background: #a855f7;
+            cursor: pointer; border: none; box-shadow: 0 0 10px rgba(168, 85, 247, 0.6);
+        }
+        .input-group { margin: 15px 0; }
+        .input-group label { display: block; font-size: 12px; color: rgba(255, 255, 255, 0.9); margin-bottom: 8px; }
+        .input-group input {
+            width: 100%; padding: 10px; background: rgba(20, 0, 40, 0.5);
+            border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 6px; color: white; font-size: 13px;
+        }
+        .input-group input:focus {
+            outline: none; border-color: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+        }
+        .pattern-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+        .pattern-btn {
+            padding: 8px; background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 6px; color: white; cursor: pointer; transition: all 0.3s ease; font-size: 12px;
+        }
+        .pattern-btn:hover { background: rgba(168, 85, 247, 0.2); border-color: #a855f7; }
+        .pattern-btn.active { background: #a855f7; border-color: #a855f7; box-shadow: 0 0 15px rgba(147, 51, 234, 0.5); }
+        .container { display: flex; min-height: 100vh; }
+        .sidebar {
+            width: 200px; background: rgba(20, 0, 40, 0.6); padding: 20px;
+            border-right: 1px solid rgba(147, 51, 234, 0.3); backdrop-filter: blur(10px);
+        }
+        .sidebar h3 {
+            color: #a855f7; font-size: 16px; margin-bottom: 15px; font-weight: 600;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+        }
+        .sidebar-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px; margin: 5px 0;
+            border-radius: 8px; cursor: pointer; transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.8); text-decoration: none; background: transparent;
+            border: none; width: 100%; text-align: left; font-size: 14px;
+        }
+        .sidebar-item:hover {
+            background: rgba(168, 85, 247, 0.2); color: white;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+        .sidebar-item.active {
+            background: rgba(147, 51, 234, 0.5); color: white;
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.5);
+        }
+        .main-content { flex: 1; padding: 30px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .section-title {
+            font-size: 28px; font-weight: 600; color: white;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+        .filter-tabs { display: flex; gap: 10px; }
+        .filter-tab {
+            padding: 10px 20px; border-radius: 25px; border: 1px solid rgba(147, 51, 234, 0.3);
+            cursor: pointer; transition: all 0.3s ease; font-weight: 500;
+        }
+        .filter-tab.active {
+            background: #9333ea; color: white; border-color: #9333ea;
+            box-shadow: 0 0 20px rgba(147, 51, 234, 0.6);
+        }
+        .filter-tab:not(.active) { background: rgba(20, 0, 40, 0.5); color: rgba(255, 255, 255, 0.8); }
+        .filter-tab:hover:not(.active) {
+            background: rgba(147, 51, 234, 0.3); border-color: #a855f7;
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+        }
+        .textures-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; margin-top: 20px;
+        }
+        .texture-card {
+            background: rgba(20, 0, 40, 0.5); border-radius: 16px; overflow: hidden;
+            border: 2px solid rgba(147, 51, 234, 0.2); transition: all 0.3s ease;
+            cursor: pointer; backdrop-filter: blur(10px);
+        }
+        .texture-card:hover {
+            transform: translateY(-5px); border-color: #9333ea;
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.5);
+        }
+        .texture-image { height: 200px; background-size: cover; background-position: center; }
+        .texture-content { padding: 20px; }
+        .texture-name { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+        .texture-type {
+            font-size: 12px; color: #a855f7; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 12px; font-weight: 500;
+        }
+        .texture-description { font-size: 14px; color: rgba(255, 255, 255, 0.8); line-height: 1.5; margin-bottom: 15px; }
+        .care-tips {
+            background: rgba(147, 51, 234, 0.15); padding: 12px;
+            border-radius: 8px; border-left: 3px solid #a855f7;
+        }
+        .care-tips h4 { font-size: 13px; color: #c084fc; margin-bottom: 8px; font-weight: 600; }
+        .care-tips ul { list-style: none; font-size: 12px; color: rgba(255, 255, 255, 0.9); }
+        .care-tips li { margin: 4px 0; padding-left: 15px; position: relative; }
+        .care-tips li::before { content: '•'; color: #a855f7; position: absolute; left: 0; }
+        .new-texture-card {
+            background: rgba(20, 0, 40, 0.3); border: 2px dashed rgba(147, 51, 234, 0.5);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 300px; cursor: pointer; transition: all 0.3s ease;
+        }
+        .new-texture-card:hover {
+            border-color: #a855f7; background: rgba(147, 51, 234, 0.2);
+            transform: translateY(-5px); box-shadow: 0 0 30px rgba(147, 51, 234, 0.4);
+        }
+        .plus-icon {
+            width: 50px; height: 50px; border: 2px solid #a855f7; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
+            color: #a855f7; margin-bottom: 15px; text-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h3>Herramientas</h3>
+            <button class="sidebar-item" onclick="location.href='moodboard.html'"><span>🔙</span> Volver</button>
+            <button class="sidebar-item" onclick="location.href='colores.html'"><span>🎨</span> Colores</button>
+            <button class="sidebar-item active"><span>🧵</span> Texturas</button>
+            <h3 style="margin-top: 25px;">Colecciones</h3>
+            <button class="sidebar-item"><span>📁</span> Todas</button>
+            <button class="sidebar-item"><span>👤</span> Mis Texturas</button>
+            <button class="sidebar-item"><span>👥</span> Compartidas</button>
+            <button class="sidebar-item"><span>➕</span> Nueva Colección</button>
+        </div>
+        <div class="main-content">
+            <div class="section-header">
+                <h1 class="section-title">Texturas de Tela</h1>
+                <div class="filter-tabs">
+                    <button class="filter-tab active">Todas</button>
+                    <button class="filter-tab">Algodón</button>
+                    <button class="filter-tab">Seda</button>
+                    <button class="filter-tab">Lana</button>
+                    <button class="filter-tab">Sintéticas</button>
+                </div>
+            </div>
+            <div class="textures-grid">
+                <div class="texture-card new-texture-card" onclick="openDesignModal()">
+                    <div class="plus-icon">+</div>
+                    <div style="color: #a855f7; font-weight: 600;">Nueva Textura</div>
+                </div>
+                <div class="texture-card">
+                    <div class="texture-image" style="background-image: linear-gradient(45deg, #8B4513 25%, transparent 25%), linear-gradient(-45deg, #8B4513 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #8B4513 75%), linear-gradient(-45deg, transparent 75%, #8B4513 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; background-color: #D2691E;"></div>
+                    <div class="texture-content">
+                        <div class="texture-type">Algodón</div>
+                        <div class="texture-name">Tweed Clásico</div>
+                        <div class="texture-description">Tejido resistente y texturizado, perfecto para abrigos y chaquetas elegantes.</div>
+                        <div class="care-tips">
+                            <h4>Consejos de Cuidado</h4>
+                            <ul><li>Lavado en seco preferible</li><li>Planchar a temperatura media</li><li>Almacenar en lugar seco</li></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="texture-card">
+                    <div class="texture-image" style="background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3) 1px, transparent 1px), #E6E6FA; background-size: 15px 15px;"></div>
+                    <div class="texture-content">
+                        <div class="texture-type">Seda</div>
+                        <div class="texture-name">Seda Natural</div>
+                        <div class="texture-description">Fibra natural de lujo con brillo característico.</div>
+                        <div class="care-tips">
+                            <h4>Consejos de Cuidado</h4>
+                            <ul><li>Lavado a mano con agua fría</li><li>Usar detergente suave</li><li>Secar a la sombra</li></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="designModal">
+        <div class="design-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">🎨 Crear Nueva Textura</h2>
+                <div class="modal-actions">
+                    <button class="btn btn-danger" onclick="clearCanvas()">🗑️ Limpiar</button>
+                    <button class="btn btn-primary" onclick="saveTexture()">💾 Guardar</button>
+                    <button class="btn btn-secondary" onclick="closeDesignModal()">✕ Cerrar</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="tools-panel">
+                    <div class="tool-section">
+                        <h3>🖌️ Herramientas</h3>
+                        <button class="tool-btn active" onclick="selectTool('pencil')" id="tool-pencil">✏️ Pincel</button>
+                        <button class="tool-btn" onclick="selectTool('eraser')" id="tool-eraser">🧹 Borrador</button>
+                        <button class="tool-btn" onclick="selectTool('line')" id="tool-line">📏 Línea</button>
+                        <button class="tool-btn" onclick="selectTool('circle')" id="tool-circle">⭕ Círculo</button>
+                        <button class="tool-btn" onclick="selectTool('rectangle')" id="tool-rectangle">▭ Rectángulo</button>
+                    </div>
+                    <div class="tool-section">
+                        <h3>🎨 Colores</h3>
+                        <div class="color-grid">
+                            <div class="color-option selected" style="background: #a855f7;" onclick="selectColor('#a855f7', event)"></div>
+                            <div class="color-option" style="background: #ff6b6b;" onclick="selectColor('#ff6b6b', event)"></div>
+                            <div class="color-option" style="background: #4ecdc4;" onclick="selectColor('#4ecdc4', event)"></div>
+                            <div class="color-option" style="background: #45b7d1;" onclick="selectColor('#45b7d1', event)"></div>
+                            <div class="color-option" style="background: #f9ca24;" onclick="selectColor('#f9ca24', event)"></div>
+                            <div class="color-option" style="background: #6ab04c;" onclick="selectColor('#6ab04c', event)"></div>
+                            <div class="color-option" style="background: #ffffff;" onclick="selectColor('#ffffff', event)"></div>
+                            <div class="color-option" style="background: #000000;" onclick="selectColor('#000000', event)"></div>
+                        </div>
+                        <div class="input-group">
+                            <label>Color personalizado</label>
+                            <input type="color" id="customColor" value="#a855f7" onchange="selectColor(this.value, event)">
+                        </div>
+                    </div>
+                    <div class="tool-section">
+                        <h3>⚙️ Ajustes</h3>
+                        <div class="slider-control">
+                            <label>Tamaño del pincel: <span id="brushSizeValue">5</span>px</label>
+                            <input type="range" min="1" max="50" value="5" id="brushSize" oninput="updateBrushSize(this.value)">
+                        </div>
+                        <div class="slider-control">
+                            <label>Opacidad: <span id="opacityValue">100</span>%</label>
+                            <input type="range" min="0" max="100" value="100" id="opacity" oninput="updateOpacity(this.value)">
+                        </div>
+                    </div>
+                    <div class="tool-section">
+                        <h3>🎭 Patrones</h3>
+                        <div class="pattern-grid">
+                            <button class="pattern-btn" onclick="applyPattern('dots')">⚫ Puntos</button>
+                            <button class="pattern-btn" onclick="applyPattern('stripes')">▬ Rayas</button>
+                            <button class="pattern-btn" onclick="applyPattern('grid')">⊞ Cuadrícula</button>
+                            <button class="pattern-btn" onclick="applyPattern('waves')">〰 Ondas</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-container"><canvas id="textureCanvas" width="600" height="600"></canvas></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let canvas,ctx,isDrawing=false,currentTool='pencil',currentColor='#a855f7',brushSize=5,opacity=1,startX,startY,savedImageData;
+        function initCanvas(){canvas=document.getElementById('textureCanvas');ctx=canvas.getContext('2d');canvas.addEventListener('mousedown',startDrawing);canvas.addEventListener('mousemove',draw);canvas.addEventListener('mouseup',stopDrawing);canvas.addEventListener('mouseout',stopDrawing);ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height)}
+        function openDesignModal(){document.getElementById('designModal').classList.add('active');if(!canvas)initCanvas()}
+        function closeDesignModal(){document.getElementById('designModal').classList.remove('active')}
+        function selectTool(t){currentTool=t;document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));document.getElementById(`tool-${t}`).classList.add('active');canvas.style.cursor=t==='eraser'?'not-allowed':'crosshair'}
+        function selectColor(c,e){currentColor=c;document.querySelectorAll('.color-option').forEach(o=>o.classList.remove('selected'));if(e&&e.target.classList.contains('color-option'))e.target.classList.add('selected')}
+        function updateBrushSize(v){brushSize=v;document.getElementById('brushSizeValue').textContent=v}
+        function updateOpacity(v){opacity=v/100;document.getElementById('opacityValue').textContent=v}
+        function startDrawing(e){isDrawing=true;const r=canvas.getBoundingClientRect();startX=e.clientX-r.left;startY=e.clientY-r.top;if(currentTool==='line'||currentTool==='circle'||currentTool==='rectangle')savedImageData=ctx.getImageData(0,0,canvas.width,canvas.height);if(currentTool==='pencil'||currentTool==='eraser'){ctx.beginPath();ctx.moveTo(startX,startY)}}
+        function draw(e){if(!isDrawing)return;const r=canvas.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;ctx.globalAlpha=opacity;ctx.lineCap='round';ctx.lineJoin='round';if(currentTool==='pencil'){ctx.strokeStyle=currentColor;ctx.lineWidth=brushSize;ctx.lineTo(x,y);ctx.stroke()}else if(currentTool==='eraser'){ctx.strokeStyle='white';ctx.lineWidth=brushSize*2;ctx.lineTo(x,y);ctx.stroke()}else if(currentTool==='line'||currentTool==='circle'||currentTool==='rectangle'){ctx.putImageData(savedImageData,0,0);ctx.strokeStyle=currentColor;ctx.lineWidth=brushSize;if(currentTool==='line'){ctx.beginPath();ctx.moveTo(startX,startY);ctx.lineTo(x,y);ctx.stroke()}else if(currentTool==='circle'){const rad=Math.sqrt(Math.pow(x-startX,2)+Math.pow(y-startY,2));ctx.beginPath();ctx.arc(startX,startY,rad,0,2*Math.PI);ctx.stroke()}else if(currentTool==='rectangle')ctx.strokeRect(startX,startY,x-startX,y-startY)}}
+        function stopDrawing(){isDrawing=false;ctx.beginPath()}
+        function clearCanvas(){if(confirm('¿Estás seguro de que quieres limpiar todo el diseño?')){ctx.fillStyle='white';ctx.fillRect(0,0,canvas.width,canvas.height)}}
+        function saveTexture(){const d=canvas.toDataURL('image/png'),l=document.createElement('a');l.download=`textura_${Date.now()}.png`;l.href=d;l.click();alert('¡Textura guardada exitosamente!')}
+        function applyPattern(p){ctx.globalAlpha=opacity;ctx.fillStyle=currentColor;ctx.strokeStyle=currentColor;switch(p){case 'dots':for(let i=10;i<canvas.width;i+=20)for(let j=10;j<canvas.height;j+=20){ctx.beginPath();ctx.arc(i,j,3,0,2*Math.PI);ctx.fill()}break;case 'stripes':ctx.lineWidth=5;for(let i=0;i<canvas.width;i+=20){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,canvas.height);ctx.stroke()}break;case 'grid':ctx.lineWidth=2;for(let i=0;i<canvas.width;i+=30){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,canvas.height);ctx.stroke()}for(let j=0;j<canvas.height;j+=30){ctx.beginPath();ctx.moveTo(0,j);ctx.lineTo(canvas.width,j);ctx.stroke()}break;case 'waves':ctx.lineWidth=3;for(let y=0;y<canvas.height;y+=20){ctx.beginPath();ctx.moveTo(0,y);for(let x=0;x<canvas.width;x+=10)ctx.lineTo(x,y+Math.sin(x/20)*10);ctx.stroke()}break}ctx.globalAlpha=1}
+        document.getElementById('designModal').addEventListener('click',function(e){if(e.target===this)closeDesignModal()});
+    </script>
+</body>
+</html>

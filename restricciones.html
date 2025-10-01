@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consejos de Diseño - Closet Stylized</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #2d1b4e 0%, #1e0b36 50%, #0f0520 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            position: relative;
+        }
+
+        /* Efecto de partículas espaciales */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 119, 198, 0.1) 0%, transparent 50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 25px 25px, rgba(255,255,255,0.2), transparent),
+                radial-gradient(1px 1px at 75px 75px, rgba(255,255,255,0.1), transparent),
+                radial-gradient(1px 1px at 125px 125px, rgba(255,255,255,0.15), transparent);
+            background-repeat: repeat;
+            background-size: 150px 150px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        /* Header */
+        header {
+            background: rgba(20, 10, 40, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 4px 30px rgba(168, 85, 247, 0.3);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            position: relative;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #a855f7;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .nav-links a:hover {
+            color: #a855f7;
+        }
+        
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            background: rgba(168, 85, 247, 0.2);
+            padding: 12px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            color: white;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #a855f7;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            z-index: 10;
+            padding: 40px 20px;
+            min-height: calc(100vh - 70px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .restrictions-card {
+            background: rgba(30, 20, 50, 0.8);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.1);
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #f9fafb;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .page-title p {
+            color: #d1d5db;
+            font-size: 16px;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            color: #a855f7;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #f9fafb;
+        }
+
+        /* Button Grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .selection-btn {
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            color: #d1d5db;
+            padding: 12px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .selection-btn:hover {
+            background: rgba(168, 85, 247, 0.2);
+            border-color: rgba(168, 85, 247, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .selection-btn.active {
+            background: rgba(168, 85, 247, 0.3);
+            border-color: #a855f7;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .material-btn.active {
+            background: rgba(59, 130, 246, 0.3);
+            border-color: #3b82f6;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Current Selection */
+        .current-selection {
+            background: rgba(15, 5, 32, 0.6);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .selection-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f9fafb;
+            margin-bottom: 15px;
+        }
+
+        .selection-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .selection-tag {
+            background: rgba(168, 85, 247, 0.2);
+            color: #a855f7;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .material-tag {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        /* Restrictions Display */
+        .restrictions-display {
+            background: rgba(15, 5, 32, 0.6);
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .restrictions-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .warning-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
+            color: #f59e0b;
+        }
+
+        .restrictions-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f9fafb;
+        }
+
+        .restriction-item {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .restriction-combination {
+            font-weight: 600;
+            color: #fca5a5;
+            margin-bottom: 8px;
+        }
+
+        .restriction-message {
+            color: #fed7d7;
+            line-height: 1.5;
+        }
+
+        .no-restrictions {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid #22c55e;
+            border-radius: 8px;
+            padding: 16px;
+            color: #bbf7d0;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .restrictions-card {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+            
+            .page-title h1 {
+                font-size: 24px;
+            }
+            
+            .button-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 8px;
+            }
+            
+            .selection-btn {
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Closet Stylized</div>
+                <div class="nav-links">
+                    <a href="index.html">Inicio</a>
+                    <a href="diseño.html">Diseñar</a>
+                    <a href="galeria.html">Galería</a>
+                    <a href="inicio_de_sesion.html">Iniciar Sesión</a>
+                    <a href="carrito.html">Carrito</a>
+                    <a href="bordados.html">Diseño Bordado</a>
+                    <a href="moodboard.html">Colaboraciones</a>
+                    <a href="restricciones.html">Consejos de Diseño</a>
+                </div>
+                
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="restrictions-card">
+            <!-- Page Title -->
+            <div class="page-title">
+                <h1>Consejos de Diseño</h1>
+                <p>Selecciona materiales y técnicas para conocer las restricciones aplicables</p>
+            </div>
+
+            <!-- Material Selection -->
+            <div class="section">
+                <div class="section-header">
+                    <svg class="section-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                    <h2 class="section-title">Material Principal</h2>
+                </div>
+                <div class="button-grid">
+                    <button data-material="cuero" class="selection-btn material-btn">Cuero</button>
+                    <button data-material="seda" class="selection-btn material-btn">Seda</button>
+                    <button data-material="algodón" class="selection-btn material-btn">Algodón</button>
+                    <button data-material="lana" class="selection-btn material-btn">Lana</button>
+                </div>
+            </div>
+
+            <!-- Design Features -->
+            <div class="section">
+                <div class="section-header">
+                    <svg class="section-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+                    </svg>
+                    <h2 class="section-title">Técnicas y Diseños</h2>
+                </div>
+                <div class="button-grid">
+                    <button data-feature="bordados" class="selection-btn feature-btn">Bordados</button>
+                    <button data-feature="lavado-en-seco" class="selection-btn feature-btn">Lavado en seco</button>
+                    <button data-feature="exposición-solar" class="selection-btn feature-btn">Exposición solar</button>
+                    <button data-feature="estampar" class="selection-btn feature-btn">Estampar</button>
+                    <button data-feature="plisados" class="selection-btn feature-btn">Plisados</button>
+                    <button data-feature="teñido" class="selection-btn feature-btn">Teñido</button>
+                </div>
+            </div>
+
+            <!-- Current Selection -->
+            <div class="current-selection">
+                <div class="selection-header">Selección actual:</div>
+                <div class="selection-tags">
+                    <span id="selected-material" class="selection-tag material-tag hidden"></span>
+                    <div id="selected-features" class="selection-tags"></div>
+                </div>
+            </div>
+
+            <!-- Restrictions Display -->
+            <div class="restrictions-display">
+                <div class="restrictions-header">
+                    <svg class="warning-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <h3 class="restrictions-title">Restricciones aplicables</h3>
+                </div>
+                <div id="restrictions-container">
+                    <div class="no-restrictions">
+                        Selecciona un material y técnicas para ver las restricciones correspondientes
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Database of restrictions
+        const restrictions = {
+            cuero: {
+                "bordados": "No se recomienda bordar en cuero: puede dañar el material y crear perforaciones irreparables.",
+                "lavado-en-seco": "El cuero no debe lavarse en seco. Requiere limpieza profesional especializada."
+            },
+            seda: {
+                "lavado-en-seco": "La seda requiere lavado en seco exclusivamente para mantener su textura.",
+                "exposición-solar": "La seda pierde color y resistencia con exposición solar prolongada."
+            },
+            lana: {
+                "exposición-solar": "La lana se encoge y deforma con calor y luz solar directa.",
+                "teñido": "El teñido posterior en lana es complicado y puede resultar en colores no uniformes."
+            },
+            algodón: {
+                "plisados": "Los plisados en algodón requieren tratamiento químico especial para ser permanentes."
+            }
+        };
+
+        // UI Elements
+        const materialBtns = document.querySelectorAll('.material-btn');
+        const featureBtns = document.querySelectorAll('.feature-btn');
+        const selectedMaterialSpan = document.getElementById('selected-material');
+        const selectedFeaturesDiv = document.getElementById('selected-features');
+        const restrictionsContainer = document.getElementById('restrictions-container');
+
+        // State
+        let currentMaterial = null;
+        let currentFeatures = new Set();
+
+        // Event Listeners
+        materialBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentMaterial = btn.dataset.material;
+                selectedMaterialSpan.textContent = `Material: ${currentMaterial}`;
+                selectedMaterialSpan.classList.remove('hidden');
+                
+                // Update restrictions
+                checkRestrictions();
+                
+                // Update active state
+                materialBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        featureBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const feature = btn.dataset.feature;
+                
+                if (currentFeatures.has(feature)) {
+                    currentFeatures.delete(feature);
+                    btn.classList.remove('active');
+                } else {
+                    currentFeatures.add(feature);
+                    btn.classList.add('active');
+                }
+                
+                updateSelectedFeatures();
+                checkRestrictions();
+            });
+        });
+
+        // Functions
+        function updateSelectedFeatures() {
+            selectedFeaturesDiv.innerHTML = '';
+            currentFeatures.forEach(feature => {
+                const span = document.createElement('span');
+                span.className = 'selection-tag';
+                span.textContent = feature;
+                selectedFeaturesDiv.appendChild(span);
+            });
+        }
+
+        function checkRestrictions() {
+            restrictionsContainer.innerHTML = '';
+            
+            if (!currentMaterial) {
+                const noSelection = document.createElement('div');
+                noSelection.className = 'no-restrictions';
+                noSelection.textContent = 'Selecciona un material y técnicas para ver las restricciones correspondientes';
+                restrictionsContainer.appendChild(noSelection);
+                return;
+            }
+            
+            const materialRestrictions = restrictions[currentMaterial] || {};
+            let foundRestriction = false;
+            
+            currentFeatures.forEach(feature => {
+                if (materialRestrictions[feature]) {
+                    foundRestriction = true;
+                    const restrictionDiv = document.createElement('div');
+                    restrictionDiv.className = 'restriction-item';
+                    restrictionDiv.innerHTML = `
+                        <div class="restriction-combination">${currentMaterial.charAt(0).toUpperCase() + currentMaterial.slice(1)} + ${feature}</div>
+                        <div class="restriction-message">${materialRestrictions[feature]}</div>
+                    `;
+                    restrictionsContainer.appendChild(restrictionDiv);
+                }
+            });
+            
+            if (!foundRestriction && currentFeatures.size > 0) {
+                const noRestrictions = document.createElement('div');
+                noRestrictions.className = 'no-restrictions';
+                noRestrictions.textContent = 'No hay restricciones conocidas para esta combinación. ¡Puedes proceder con confianza!';
+                restrictionsContainer.appendChild(noRestrictions);
+            } else if (currentFeatures.size === 0) {
+                const selectTechniques = document.createElement('div');
+                selectTechniques.className = 'no-restrictions';
+                selectTechniques.textContent = 'Selecciona técnicas o diseños para ver las restricciones específicas';
+                restrictionsContainer.appendChild(selectTechniques);
+            }
+        }
+    </script>
+</body>
+</html>
