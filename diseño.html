@@ -269,8 +269,13 @@
         model-viewer {
             width: 100%;
             height: 100%;
+            max-width: 180px;   /* Más pequeño para que se vea completa */
+            max-height: 260px;  /* Más pequeño para que se vea completa */
+            margin: 0 auto;
+            display: block;
             border-radius: 20px;
             background: transparent;
+            box-sizing: border-box;
         }
 
         .view-controls {
@@ -928,9 +933,10 @@
                         camera-controls
                         ar
                         ar-modes="webxr scene-viewer quick-look"
-                        camera-orbit="0deg 90deg 2.5m"
-                        min-camera-orbit="auto auto 1.5m"
-                        max-camera-orbit="auto auto 4m"
+                        camera-orbit="0deg 90deg 5.5m"
+                        <!-- Aleja la cámara para ver la prenda completa -->
+                        min-camera-orbit="auto auto 4m"
+                        max-camera-orbit="auto auto 8m"
                         loading="lazy"
                         reveal="auto"
                         exposure="1"
@@ -1019,9 +1025,7 @@
                     <h3>👔 Tipo de Prenda</h3>
                     <div class="garment-selector">
                         <button class="garment-btn active" data-garment="camiseta">👕 Camiseta</button>
-                        <button class="garment-btn" data-garment="polo">👔 Polo</button>
                         <button class="garment-btn" data-garment="camisa">👔 Camisa</button>
-                        <button class="garment-btn" data-garment="buzo">🧥 Buzo</button>
                         <button class="garment-btn" data-garment="chaqueta">🧥 Chaqueta</button>
                         <button class="garment-btn" data-garment="pantalon">👖 Pantalón</button>
                         <button class="garment-btn" data-garment="short">🩳 Short</button>
@@ -1226,8 +1230,8 @@
                     modelViewer.setAttribute('camera-orbit', '0deg 90deg 3.2m');
                     modelViewer.setAttribute('min-camera-orbit', 'auto auto 2m');
                 } else {
-                    modelViewer.setAttribute('camera-orbit', '0deg 90deg 2.5m');
-                    modelViewer.setAttribute('min-camera-orbit', 'auto auto 1.5m');
+                    modelViewer.setAttribute('camera-orbit', '0deg 90deg 4m');
+                    modelViewer.setAttribute('min-camera-orbit', 'auto auto 3m');
                 }
 
                 modelViewer.addEventListener('load', function() {
