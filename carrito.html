@@ -572,57 +572,211 @@
             padding: 20px;
         }
         
-        /* Responsive design */
-        @media (max-width: 768px) {
+        /* Mobile hamburger + mobile nav */
+        .hamburger {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: white;
+            margin: 4px 0;
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 85%;
+            max-width: 320px;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(10,10,10,0.98), rgba(20,10,40,0.98));
+            box-shadow: -12px 0 30px rgba(0,0,0,0.6);
+            z-index: 1500;
+            transition: right 0.28s ease;
+            padding: 80px 20px 20px 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-nav.open { right: 0; }
+
+        .mobile-nav ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 12px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .mobile-nav a:hover {
+            background: rgba(147, 51, 234, 0.12);
+        }
+
+        /* Small screen layout tweaks */
+        @media (max-width: 900px) {
             .nav {
-                flex-direction: column;
-                gap: 15px;
-                padding: 20px;
+                padding: 0 1rem;
             }
-            
+
             .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 15px;
+                display: none;
             }
-            
+
+            .hamburger {
+                display: flex;
+            }
+
             .logo {
                 font-size: 1.2rem;
             }
 
-            .products-grid {
-                grid-template-columns: 1fr;
+            .products-container {
+                padding: 16px 12px;
+                margin-top: 110px;
             }
 
-            .products-container {
-                margin-top: 180px;
+            .product-image {
+                height: 160px;
+            }
+
+            .product-card {
+                border-radius: 14px;
+            }
+
+            .add-to-cart, .view-options {
+                padding: 0.9rem;
+                font-size: 0.9rem;
             }
         }
+
+        /* Make cart icon and count easier to tap on mobile */
+        @media (max-width: 480px) {
+            .cart-icon {
+                padding: 18px; /* más área táctil */
+                border-radius: 12px;
+            }
+            .cart-count {
+                width: 24px;
+                height: 24px;
+                top: -12px;
+                right: -12px;
+                font-size: 0.85rem;
+            }
+
+            /* ensure hamburger is clearly visible and tappable on small screens */
+            .hamburger {
+                width: 48px;
+                height: 48px;
+                padding: 10px;
+            }
+            .hamburger span {
+                width: 24px;
+                height: 2px;
+            }
+
+            /* make mobile nav occupy full screen on small devices for clarity */
+            .mobile-nav {
+                width: 100%;
+                max-width: none;
+                right: -100%;
+                padding: 90px 18px 20px 18px;
+            }
+
+            .mobile-nav.open {
+                right: 0;
+            }
+
+            .mobile-nav a {
+                padding: 14px 16px;
+                font-size: 1.05rem;
+            }
+        }
+
+        /* slightly larger breakpoint so tablets show hamburger too */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+        }
+
+        /* ...existing code... */
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav">
-            <div class="logo">Closet Stylized</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="diseño.html">Diseñar</a></li>
-                <li><a href="galeria.html">Galería</a></li>
-                <li><a href="inicio_de_sesion.html">Iniciar Sesión</a></li>
-                <li><a href="diseño_bordado.html">diseño bordado</a></li>
-                <li><a href="colaboraciones.html">colaboraciones</a></li>
-                <li><a href="consejos_de_diseño.html">consejos de diseño</a></li>
-                <li><a href="carrito.html">Carrito</a></li>
-            </ul>
-            <div class="cart-container">
-                <div class="cart-icon" id="cartIcon">
-                    <span>🛒</span>
-                    <div class="cart-count" id="cartCount">0</div>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="nav">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <div class="logo">Closet Stylized</div>
+
+                    <!-- Hamburger visible on small screens -->
+                    <button id="menuToggle" class="hamburger" aria-label="Abrir menú" aria-expanded="false">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+
+                <ul class="nav-links" id="desktopNav">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="diseño.html">Diseñar</a></li>
+                    <li><a href="galeria.html">Galería</a></li>
+                    <li><a href="inicio_de_sesion.html">Iniciar Sesión</a></li>
+                    <li><a href="diseño_bordado.html">diseño bordado</a></li>
+                    <li><a href="colaboraciones.html">colaboraciones</a></li>
+                    <li><a href="consejos_de_diseño.html">consejos de diseño</a></li>
+                    <li><a href="carrito.html">Carrito</a></li>
+                </ul>
+
+                <div class="cart-container">
+                    <div class="cart-icon" id="cartIcon">
+                        <span>🛒</span>
+                        <div class="cart-count" id="cartCount">0</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+
+            <!-- Mobile menu (slide-in) -->
+            <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="diseño.html">Diseñar</a></li>
+                    <li><a href="galeria.html">Galería</a></li>
+                    <li><a href="inicio_de_sesion.html">Iniciar Sesión</a></li>
+                    <li><a href="diseño_bordado.html">Diseño Bordado</a></li>
+                    <li><a href="colaboraciones.html">Colaboraciones</a></li>
+                    <li><a href="consejos_de_diseño.html">Consejos de Diseño</a></li>
+                    <li><a href="carrito.html">Carrito</a></li>
+                </ul>
+            </div>
+        </nav>
     
     <!-- Products Section -->
     <section class="products-container">
@@ -895,6 +1049,92 @@
             }
         });
         
+        // Mobile menu toggle (improved)
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+
+        function closeMobileNav() {
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            mobileNav.classList.remove('open');
+            mobileNav.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            // remove inert attribute from main content for accessibility if set
+            document.querySelectorAll('body > *:not(.mobile-nav):not(.navbar)').forEach(el => el.inert = false);
+        }
+
+        function openMobileNav() {
+            menuToggle.classList.add('active');
+            menuToggle.setAttribute('aria-expanded', 'true');
+            mobileNav.classList.add('open');
+            mobileNav.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            // set focus to first link for keyboard users
+            const firstLink = mobileNav.querySelector('a');
+            if (firstLink) firstLink.focus();
+            // make other page content inert so screen readers don't reach it while menu open
+            document.querySelectorAll('body > *:not(.mobile-nav):not(.navbar)').forEach(el => el.inert = true);
+        }
+
+        menuToggle.addEventListener('click', (e) => {
+            const isOpen = mobileNav.classList.contains('open');
+            if (isOpen) closeMobileNav();
+            else openMobileNav();
+        });
+
+        // Close mobile nav when clicking a link
+        mobileNav.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                closeMobileNav();
+            });
+        });
+
+        // Close mobile nav when clicking outside it
+        document.addEventListener('click', (e) => {
+            if (!mobileNav.contains(e.target) && !menuToggle.contains(e.target) && mobileNav.classList.contains('open')) {
+                closeMobileNav();
+            }
+        });
+
+        // Close on Escape for accessibility
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
+                closeMobileNav();
+            }
+        });
+
+        // Close mobile nav when resizing to desktop to avoid stuck state
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1024 && mobileNav.classList.contains('open')) {
+                closeMobileNav();
+            }
+        });
+
+        // Prevent accidental body-scroll jump on iOS when opening/closing menu
+        (function fixIOSbodyScroll() {
+            let scrollTop = 0;
+            const originalStyle = document.body.style;
+            const originalOverflow = originalStyle.overflow;
+            const setNoScroll = () => {
+                scrollTop = window.scrollY || document.documentElement.scrollTop;
+                document.documentElement.style.top = `-${scrollTop}px`;
+                document.body.style.position = 'fixed';
+                document.body.style.width = '100%';
+            };
+            const unsetNoScroll = () => {
+                document.body.style.position = '';
+                document.body.style.width = '';
+                window.scrollTo(0, scrollTop);
+            };
+
+            const observer = new MutationObserver(() => {
+                if (mobileNav.classList.contains('open')) setNoScroll();
+                else unsetNoScroll();
+            });
+
+            observer.observe(mobileNav, { attributes: true, attributeFilter: ['class'] });
+        })();
+
         // Initialize
         renderProducts();
         updateCart();

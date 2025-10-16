@@ -73,6 +73,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
         
         .logo {
@@ -125,6 +126,22 @@
             font-weight: bold;
         }
 
+        /* Header mobile toggles */
+        .menu-toggle, .sidebar-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: #a855f7;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+        }
+
+        .menu-toggle:hover, .sidebar-toggle:hover {
+            background: rgba(168,85,247,0.08);
+        }
+
         /* Main Layout */
         .main-container {
             display: flex;
@@ -140,6 +157,10 @@
             backdrop-filter: blur(15px);
             border-right: 1px solid rgba(168, 85, 247, 0.3);
             padding: 20px;
+        }
+
+        .sidebar.hidden {
+            display: none;
         }
 
         .sidebar h3 {
@@ -435,26 +456,28 @@
             position: relative;
         }
 
+        /* Make canvases responsive visually (keeps internal resolution via width/height attrs) */
         #designCanvas {
             width: 100%;
-            height: 500px;
+            height: auto;
             background: rgba(15, 5, 32, 0.8);
             border-radius: 10px;
             border: 1px solid rgba(168, 85, 247, 0.3);
             cursor: crosshair;
-            position: absolute;
+            position: relative;
             z-index: 2;
+            display: block;
         }
 
         #templateOverlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: calc(100% - 40px);
-            height: 500px;
+            width: 100%;
+            height: auto;
+            position: relative;
             pointer-events: none;
             border-radius: 10px;
             z-index: 1;
+            display: block;
+            margin-bottom: 10px;
         }
 
         .canvas-tools {
@@ -623,17 +646,55 @@
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .tools-panel {
+                max-height: 400px;
+            }
+        }
+
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
             }
             
-            .sidebar {
-                width: 100%;
+            /* Show toggles on small screens */
+            .menu-toggle, .sidebar-toggle {
+                display: inline-block;
             }
             
+            /* Hide nav-links by default on mobile; opened via .mobile-open */
             .nav-links {
                 display: none;
+            }
+
+            .nav-links.mobile-open {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                position: absolute;
+                top: 65px;
+                right: 30px;
+                background: rgba(20,10,40,0.95);
+                padding: 12px;
+                border-radius: 12px;
+                border: 1px solid rgba(168,85,247,0.2);
+                box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+                z-index: 200;
+                min-width: 200px;
+            }
+
+            .nav-links a {
+                padding: 8px 10px;
+                font-size: 15px;
+            }
+            
+            .sidebar {
+                width: 100%;
+                display: none; /* default hidden to keep mobile view focused */
+            }
+
+            .sidebar.visible {
+                display: block;
             }
             
             .design-workspace {
@@ -643,6 +704,11 @@
             .tools-panel {
                 width: 100%;
             }
+
+            /* Make canvas area comfortable on small screens */
+            .canvas-container {
+                padding: 12px;
+            }
         }
     </style>
 </head>
@@ -651,17 +717,24 @@
     <header>
         <div class="container">
             <nav>
-                <div class="logo">Closet Stylized</div>
-                <div class="nav-links">
-                   <a href="index.html">Inicio</a>
-                   <a href="diseño.html">Diseñar</a>
-                   <a href="galeria.html">Galería</a>
-                   <a href="inicio_de_sesion.html">Iniciar Sesión</a>
-                   <a href="bordados.html">diseño bordado</a>
-                   <a href="moodboard.html">colaboraciones</a>
-                   <a href="restricciones.html">consejos de diseño</a>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <button id="sidebarToggle" class="sidebar-toggle" aria-label="Abrir herramientas">≡</button>
+                    <div class="logo">Closet Stylized</div>
                 </div>
-                
+
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div class="nav-links" id="navLinks">
+                       <a href="index.html">Inicio</a>
+                       <a href="diseño.html">Diseñar</a>
+                       <a href="galeria.html">Galería</a>
+                       <a href="inicio_de_sesion.html">Iniciar Sesión</a>
+                       <a href="bordados.html">diseño bordado</a>
+                       <a href="moodboard.html">colaboraciones</a>
+                       <a href="restricciones.html">consejos de diseño</a>
+                    </div>
+
+                    <button id="menuToggle" class="menu-toggle" aria-label="Abrir menú">☰</button>
+                </div>
             </nav>
         </div>
     </header>
@@ -669,7 +742,7 @@
     <!-- Main Container -->
     <div class="main-container">
         <!-- Sidebar -->
-        <div class="sidebar">
+        <div class="sidebar" id="sidebarPanel">
             <h3>Herramientas</h3>
             <ul>
                 <li><a href="colores.html" id="colorsBtn">🎨 Colores</a></li>
@@ -942,8 +1015,8 @@
                 canvas.addEventListener('mouseout', stopDrawing);
                 
                 // Touch events for mobile
-                canvas.addEventListener('touchstart', handleTouch);
-                canvas.addEventListener('touchmove', handleTouch);
+                canvas.addEventListener('touchstart', handleTouch, {passive:false});
+                canvas.addEventListener('touchmove', handleTouch, {passive:false});
                 canvas.addEventListener('touchend', stopDrawing);
                 
                 // Set canvas properties
@@ -955,11 +1028,13 @@
         // Handle touch events
         function handleTouch(e) {
             e.preventDefault();
-            const touch = e.touches[0];
+            const touch = e.touches[0] || e.changedTouches[0];
             const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
                                            e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
                 clientX: touch.clientX,
-                clientY: touch.clientY
+                clientY: touch.clientY,
+                bubbles: true,
+                cancelable: true
             });
             e.target.dispatchEvent(mouseEvent);
         }

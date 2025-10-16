@@ -61,6 +61,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 30px;
+            gap: 20px;
         }
 
         .logo {
@@ -73,6 +74,37 @@
             text-shadow: 0 0 30px rgba(147, 51, 234, 0.6);
             letter-spacing: -0.5px;
         }
+
+        /* Menu de barras (hamburger) */
+        .menu-button {
+            display: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            width: 44px;
+            height: 44px;
+            padding: 6px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+
+        .menu-button:hover { background: rgba(147,51,234,0.06); }
+
+        .menu-button .bar {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg,#c084fc,#9333ea);
+            border-radius: 2px;
+            margin: 4px 0;
+            transition: transform 0.25s, opacity 0.25s;
+        }
+
+        .menu-button[aria-expanded="true"] .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .menu-button[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
+        .menu-button[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
         .nav {
             display: flex;
@@ -496,41 +528,60 @@
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .registration-container { margin: 40px 25px; padding: 40px; }
+            .header-content { padding: 15px 20px; }
+        }
+
         @media (max-width: 768px) {
-            .registration-container {
-                margin: 30px 20px;
-                padding: 35px 25px;
-            }
+            .menu-button { display: flex; }
 
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-                padding: 15px;
-            }
-
+            /* Make nav a compact dropdown */
             .nav {
-                gap: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
+                position: absolute;
+                top: 68px;
+                right: 16px;
+                background: rgba(8,8,12,0.95);
+                border: 1px solid rgba(147,51,234,0.12);
+                padding: 12px;
+                border-radius: 12px;
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-end;
+                width: calc(100% - 40px);
+                max-width: 360px;
+                transform-origin: top right;
+                transform: scaleY(0);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.25s ease, opacity 0.25s ease;
             }
 
             .nav a {
-                font-size: 0.9rem;
-                padding: 10px 15px;
+                padding: 10px 14px;
+                width: 100%;
+                text-align: right;
+                border-radius: 10px;
             }
 
-            .logo {
-                font-size: 1.5rem;
+            .nav.nav--open {
+                transform: scaleY(1);
+                opacity: 1;
+                pointer-events: auto;
             }
 
-            .registration-title {
-                font-size: 2rem;
+            .registration-container {
+                margin: 20px 12px;
+                padding: 28px;
+                border-radius: 18px;
             }
 
-            .footer-links {
-                flex-direction: column;
-                gap: 15px;
-            }
+            .registration-title { font-size: 2rem; margin-bottom: 26px; }
+
+            /* Simplify background elements on mobile to improve performance */
+            .nebula-bg, .galaxy-element { display: none; }
+
+            .footer { padding: 30px 14px; }
         }
     </style>
 </head>
@@ -546,7 +597,14 @@
     <div class="header">
         <div class="header-content">
             <div class="logo">Closet Stylized</div>
-            <nav class="nav">
+
+            <button class="menu-button" aria-expanded="false" aria-label="Abrir menú">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <nav class="nav" id="main-nav">
                 <a href="index.html">Inicio</a>
                 <a href="diseño.html">Diseñar</a>
                 <a href="galeria.html">Galería</a>
@@ -555,7 +613,6 @@
                 <a href="moodboard.html">Colaboraciones</a>
                 <a href="restricciones.html">Consejos de diseño</a>
                 <a href="carrito.html">Carrito</a>
-                
             </nav>
         </div>
     </div>
@@ -660,6 +717,10 @@
         const errorMessage = document.getElementById('error-message');
         const errorText = document.getElementById('error-text');
 
+        // Mobile menu elements
+        const menuButton = document.querySelector('.menu-button');
+        const nav = document.getElementById('main-nav');
+
         // Función para mostrar notificaciones
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
@@ -708,6 +769,11 @@
         
         // Verificar edad cuando cambia la fecha de nacimiento
         fechaNacimiento.addEventListener('change', function() {
+            if (!this.value) {
+                parentEmailSection.style.display = 'none';
+                parentEmail.required = false;
+                return;
+            }
             const birthDate = new Date(this.value);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
@@ -844,77 +910,52 @@
         const inputs = document.querySelectorAll('input, select');
         inputs.forEach(input => {
             input.addEventListener('focus', function() {
-                this.parentElement.querySelector('label').style.transform = 'translateY(-2px)';
-                this.parentElement.querySelector('label').style.color = '#c084fc';
+                const lbl = this.parentElement.querySelector('label');
+                if (lbl) {
+                    lbl.style.transform = 'translateY(-2px)';
+                    lbl.style.color = '#c084fc';
+                }
             });
             
             input.addEventListener('blur', function() {
-                this.parentElement.querySelector('label').style.transform = 'translateY(0)';
-                if (!this.value) {
-                    this.parentElement.querySelector('label').style.color = '#e0e7ff';
+                const lbl = this.parentElement.querySelector('label');
+                if (lbl) {
+                    lbl.style.transform = 'translateY(0)';
+                    if (!this.value) {
+                        lbl.style.color = '#e0e7ff';
+                    }
                 }
             });
         });
         
-        // Animación del carrito
+        // Animación del carrito (si existe)
         const cartIcon = document.querySelector('.cart');
-        cartIcon.addEventListener('click', function() {
-            this.style.transform = 'scale(1.1) translateY(-2px)';
-            setTimeout(() => {
-                this.style.transform = 'translateY(-2px)';
-            }, 200);
-        });
+        if (cartIcon) {
+            cartIcon.addEventListener('click', function() {
+                this.style.transform = 'scale(1.1) translateY(-2px)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-2px)';
+                }, 200);
+            });
+        }
 
-        // Efectos parallax suaves
+        // Efectos parallax suaves (reducidos en mobile via CSS)
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
             const nebulas = document.querySelectorAll('.nebula-bg');
             const galaxies = document.querySelectorAll('.galaxy-element');
             
             nebulas.forEach((nebula, index) => {
-                const speed = 0.5 + (index * 0.2);
-                nebula.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+                const speed = 0.3 + (index * 0.1);
+                nebula.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.05}deg)`;
             });
             
             galaxies.forEach((galaxy, index) => {
-                const speed = 0.3 + (index * 0.1);
+                const speed = 0.2 + (index * 0.05);
                 galaxy.style.transform = `translateY(${scrolled * speed}px)`;
             });
         });
 
-        // Inicialización
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animación de entrada para el contenedor de registro
-            const container = document.querySelector('.registration-container');
-            container.style.opacity = '0';
-            container.style.transform = 'translateY(30px)';
-            
-            setTimeout(() => {
-                container.style.transition = 'all 0.8s ease';
-                container.style.opacity = '1';
-                container.style.transform = 'translateY(0)';
-            }, 300);
-
-            // Efecto de escritura en el título
-            const title = document.querySelector('.registration-title');
-            const originalText = title.textContent;
-            title.textContent = '';
-            
-            let i = 0;
-            const typeWriter = () => {
-                if (i < originalText.length) {
-                    title.textContent += originalText.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 100);
-                }
-            };
-            
-            setTimeout(typeWriter, 800);
-        });
-    </script>
-</body>
-</html>
-        
         // Mostrar/ocultar campos según el tipo de usuario
         tipoUsuario.addEventListener('change', function() {
             const userType = this.value;
@@ -948,3 +989,69 @@
                 fechaNacimiento.dispatchEvent(birthDateEvent);
             }
         });
+
+        // Mobile menu toggle
+        if (menuButton && nav) {
+            menuButton.addEventListener('click', (e) => {
+                const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+                menuButton.setAttribute('aria-expanded', String(!expanded));
+                nav.classList.toggle('nav--open');
+            });
+
+            // Close menu when clicking a link or outside
+            nav.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') {
+                    nav.classList.remove('nav--open');
+                    menuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!nav.contains(e.target) && !menuButton.contains(e.target) && nav.classList.contains('nav--open')) {
+                    nav.classList.remove('nav--open');
+                    menuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Improve keyboard accessibility: close with Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && nav.classList.contains('nav--open')) {
+                    nav.classList.remove('nav--open');
+                    menuButton.setAttribute('aria-expanded', 'false');
+                    menuButton.focus();
+                }
+            });
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animación de entrada para el contenedor de registro
+            const container = document.querySelector('.registration-container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'all 0.8s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 300);
+
+            // Efecto de escritura en el título
+            const title = document.querySelector('.registration-title');
+            const originalText = title.textContent;
+            title.textContent = '';
+            
+            let i = 0;
+            const typeWriter = () => {
+                if (i < originalText.length) {
+                    title.textContent += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 60); // más rápido para mobile
+                }
+            };
+            
+            setTimeout(typeWriter, 400);
+        });
+    </script>
+</body>
+</html>

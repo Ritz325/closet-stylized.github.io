@@ -414,6 +414,59 @@
             color: white;
         }
 
+        /* Botón de menú (móvil) */
+        .menu-toggle {
+            display: none;
+            background: linear-gradient(135deg,#9333ea,#c084fc);
+            border: none;
+            color: white;
+            font-size: 1.25rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(147,51,234,0.35);
+        }
+
+        /* menú responsivo */
+        @media (max-width: 768px) {
+            .menu-toggle { display: flex; }
+            .nav {
+                display: none;
+                position: absolute;
+                top: 72px;
+                right: 20px;
+                background: rgba(10,10,10,0.95);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(147,51,234,0.18);
+                border-radius: 12px;
+                padding: 12px;
+                flex-direction: column;
+                gap: 12px;
+                width: calc(100% - 40px);
+                max-width: 320px;
+                z-index: 1100;
+            }
+            .nav.show { display: flex; }
+            .nav a { padding: 12px 16px; border-radius: 8px; }
+        }
+
+        /* Canvas responsive en móvil */
+        #canvas {
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            touch-action: none; /* evita el scroll al dibujar */
+        }
+
+        #previewCanvas {
+            width: 100%;
+            height: auto;
+            max-width: 300px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .header-content {
@@ -447,6 +500,11 @@
                 <a href="restricciones.html">Consejos de Diseño</a>
                 <a href="carrito.html">Carrito</a>
             </div>
+            <button class="menu-toggle" id="menuToggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width={2} d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
         </div>
     </div>
     
@@ -633,6 +691,7 @@
             const closeModal = document.getElementById('closeModal');
             const cancelOrder = document.getElementById('cancelOrder');
             const orderForm = document.getElementById('orderForm');
+            const menuToggle = document.getElementById('menuToggle');
             
             let currentColor = '#9333ea';
             let currentFont = 'Arial, sans-serif';
@@ -917,6 +976,12 @@
                 
                 orderModal.classList.remove('show');
                 orderForm.reset();
+            });
+
+            // Menú móvil
+            menuToggle.addEventListener('click', function() {
+                const nav = document.querySelector('.nav');
+                nav.classList.toggle('show');
             });
         });
     </script>

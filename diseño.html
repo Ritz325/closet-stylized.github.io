@@ -63,6 +63,154 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 30px;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(147, 51, 234, 0.6);
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+            transition: max-height 0.3s;
+        }
+
+        /* Ocultar menú en móvil */
+        .nav {
+            transition: max-height 0.3s;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1100;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 28px;
+            height: 4px;
+            margin: 4px 0;
+            background: linear-gradient(135deg, #9333ea 0%, #c084fc 100%);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 900px) {
+            .header-content {
+                padding: 15px 10px;
+            }
+            .nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10,10,10,0.98);
+                flex-direction: column;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                border-bottom-left-radius: 18px;
+                border-bottom-right-radius: 18px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            }
+            .nav.open {
+                max-height: 500px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid rgba(147,51,234,0.15);
+            }
+            .nav a {
+                width: 100%;
+                text-align: left;
+                padding: 18px 30px;
+                border-radius: 0;
+                font-size: 1.05rem;
+                border-bottom: 1px solid rgba(147,51,234,0.07);
+            }
+            .menu-toggle {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            .garment-selector {
+                grid-template-columns: 1fr;
+            }
+            .color-palette {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .garment-display {
+                width: 100%;
+                max-width: 320px;
+                height: 340px;
+            }
+            .container {
+                padding: 18px 5px;
+            }
+            .products-preview {
+                padding: 18px 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .garment-display {
+                max-width: 98vw;
+                height: 220px;
+            }
+            .garment-svg {
+                width: 120px;
+                height: 180px;
+            }
+            model-viewer {
+                max-width: 110px;
+                max-height: 140px;
+            }
+            .controls-panel, .design-area {
+                padding: 12px 4px;
+            }
+            .section-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        .header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            position: relative;
         }
 
         .logo {
@@ -899,7 +1047,12 @@
     <div class="header">
         <div class="header-content">
             <div class="logo">Closet Stylized</div>
-            <nav class="nav">
+            <div class="menu-toggle" id="menuToggle" aria-label="Abrir menú" tabindex="0">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="nav" id="mainNav">
                 <a href="index.html">Inicio</a>
                 <a href="diseño.html">Diseñar</a>
                 <a href="galeria.html">Galería</a>
@@ -934,15 +1087,8 @@
                         ar
                         ar-modes="webxr scene-viewer quick-look"
                         camera-orbit="0deg 90deg 5.5m"
-                        <!-- Aleja la cámara para ver la prenda completa -->
-                        min-camera-orbit="auto auto 4m"
-                        max-camera-orbit="auto auto 8m"
-                        loading="lazy"
-                        reveal="auto"
-                        exposure="1"
-                        shadow-intensity="1"
-                        environment-image="neutral">
-                        
+                        style="position: relative;"
+                    >
                         <div id="progressBar" slot="progress-bar" style="
                             display: block;
                             width: 40%;
@@ -1122,13 +1268,26 @@
         let currentView = '3d';
         
         const garmentShapes = {
-
             camiseta: {
+                path: "M50 50 L50 80 L40 90 L40 260 L160 260 L160 90 L150 80 L150 50 L130 50 L130 40 L70 40 L70 50 Z",
+                title: "👕 Camiseta Personalizada",
+                details: '<circle cx="85" cy="60" r="3" fill="#333" opacity="0.3"/><circle cx="115" cy="60" r="3" fill="#333" opacity="0.3"/>',
+                price: "$32.000 COP",
+                model: "prendas_CS/camisa_shirt/scene.gltf"
+            },
+            polo: {
+                path: "M50 50 L50 80 L40 90 L40 260 L160 260 L160 90 L150 80 L150 50 L130 50 L130 35 L70 35 L70 50 Z",
+                title: "👔 Polo Personalizado",
+                details: '<rect x="85" y="45" width="30" height="25" fill="#333" opacity="0.2" rx="3"/><circle cx="90" cy="52" r="2" fill="#333" opacity="0.4"/><circle cx="110" cy="52" r="2" fill="#333" opacity="0.4"/>',
+                price: "$38.000 COP",
+                model: "polo/scene.gltf"
+            },
+            camisa: {
                 path: "M45 45 L45 75 L35 85 L35 270 L165 270 L165 85 L155 75 L155 45 L135 45 L135 30 L65 30 L65 45 Z",
-                title: "👔 Camiseta Personalizada",
-                details: '<rect x="75" y="40" width="20" height="10" fill="#333" opacity="0.1" rx="5"/><circle cx="85" cy="50" r="2" fill="#333" opacity="0.4"/><circle cx="100" cy="50" r="2" fill="#333" opacity="0.4"/><circle cx="115" cy="50" r="2" fill="#333" opacity="0.4"/>',
+                title: "👔 Camisa Personalizada",
+                details: '<rect x="75" y="40" width="50" height="30" fill="#333" opacity="0.1" rx="5"/><circle cx="85" cy="50" r="2" fill="#333" opacity="0.4"/><circle cx="100" cy="50" r="2" fill="#333" opacity="0.4"/><circle cx="115" cy="50" r="2" fill="#333" opacity="0.4"/>',
                 price: "$48.000 COP",
-                model: "prendas_CS/camiseta/scene.gltf"
+                model: "prendas_CS/camisa_shirt/scene.gltf"
             },
             buzo: {
                 path: "M45 55 L45 85 L35 95 L35 275 L165 275 L165 95 L155 85 L155 55 L140 55 L140 35 L125 35 L125 25 L75 25 L75 35 L60 35 L60 55 Z",
@@ -1224,16 +1383,8 @@
                 progressBarInner.style.width = '0%';
                 
                 modelViewer.src = garment.model;
-
-                // Ajusta la cámara para camiseta y camisa
-                if (garmentType === 'camiseta' || garmentType === 'camisa') {
-                    modelViewer.setAttribute('camera-orbit', '0deg 90deg 3.2m');
-                    modelViewer.setAttribute('min-camera-orbit', 'auto auto 2m');
-                } else {
-                    modelViewer.setAttribute('camera-orbit', '0deg 90deg 4m');
-                    modelViewer.setAttribute('min-camera-orbit', 'auto auto 3m');
-                }
-
+                console.log(`Cargando modelo 3D: ${garment.model}`);
+                
                 modelViewer.addEventListener('load', function() {
                     update3DColor(currentColor);
                     progressBar.style.display = 'none';
@@ -1528,6 +1679,28 @@
                     galaxy.style.transform = `translateY(${scrolled * speed}px)`;
                 });
             });
+        });
+
+        // --- MENÚ HAMBURGUESA RESPONSIVE ---
+        const menuToggle = document.getElementById('menuToggle');
+        const mainNav = document.getElementById('mainNav');
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('open');
+            menuToggle.classList.toggle('open');
+        });
+        // Cerrar menú al hacer click fuera
+        document.addEventListener('click', (e) => {
+            if (!mainNav.contains(e.target) && !menuToggle.contains(e.target)) {
+                mainNav.classList.remove('open');
+                menuToggle.classList.remove('open');
+            }
+        });
+        // Accesibilidad: abrir/cerrar con Enter
+        menuToggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                mainNav.classList.toggle('open');
+                menuToggle.classList.toggle('open');
+            }
         });
     </script>
 </body>
